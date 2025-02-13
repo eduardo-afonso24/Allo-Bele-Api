@@ -1,0 +1,82 @@
+import mongoose from "mongoose";
+import validator from "validator";
+
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please Enter Name"],
+  },
+  image: {
+    type: String,
+    required: [false]
+  },
+  profession: {
+    type: String,
+    required: [false]
+  },
+  email: {
+    type: String,
+    required: [true, "Please Enter Email"],
+    unique: [true, "Email Already Exists"],
+    validate: validator.isEmail,
+  },
+  phone: {
+    type: Number,
+    required: [true, "Please enter your phone number"],
+  },
+  gender: {
+    type: String,
+    enum: ["Feminino", "Masculino"],
+  },
+  password: {
+    type: String,
+    required: [true, "Please enter your password"],
+    minLength: [6, "Password must be at least 6 characters long"],
+  },
+  address: {
+    type: String,
+    required: [true],
+  },
+  dateOfBirth: {
+    type: Date,
+    required: [false],
+  },
+  status: {
+    type: Boolean,
+    default: true,
+  },
+  avatar: {
+    type: [String],
+    default: [],
+  },
+  role: {
+    type: String,
+    enum: ["client", "barber", "company", "admin"],
+    default: "client",
+  },
+  location: {
+    latitude: Number,
+    longitude: Number,
+  },
+  professionalServices: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ProfissionalService"
+  }],
+
+  bookmarks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "BookMark"
+  }],
+
+  confirmationMessages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ConfirmationMessage"
+  }],
+
+  nif: {
+    type: String,
+    required: [false],
+  },
+});
+
+export const User = mongoose.model("User", UserSchema);

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",  // ou "ES6", dependendo da versão do Node.js
+    "moduleResolution": "node",
+    "target": "ESNext",  // ou "ES6"
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

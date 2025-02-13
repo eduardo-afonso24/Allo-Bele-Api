@@ -1,0 +1,20 @@
+
+import { Response, Request } from "express";
+import { ProfissionalService } from "../../../../shared";
+
+
+export const getAllServices = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { userId } = req.params;
+    const services = await ProfissionalService.find({ userId });
+    return res.status(200).json(services);
+  } catch (error) {
+    console.error("Erro ao imprimir lista de servicos:", error);
+    return res
+      .status(500)
+      .json({ message: "Ocorreu um erro ao imprimir lista de servicos." });
+  }
+};
