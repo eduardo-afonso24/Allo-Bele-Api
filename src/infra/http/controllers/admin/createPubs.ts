@@ -6,7 +6,7 @@ import { Response, Request } from "express";
 import { Pubs } from "../../../../shared";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadDir = path.join(__dirname, '../uploads');
+const uploadDir = path.join(__dirname, '../../../../uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
@@ -29,7 +29,6 @@ export const createPubs = async (req: Request, res: Response) => {
         console.error('Nenhum arquivo enviado ou arquivo inválido');
         return res.status(400).json({ message: 'Nenhum arquivo enviado ou arquivo inválido.'});
       }
-  
       const imagensUrl = `/uploads/${path.basename(file.filepath)}`;
       console.log('caminho da imgem ',imagensUrl)
       const message = Array.isArray(fields.message) ? fields.message[0] : fields.message;
