@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllRequest, getAllRequestByBarberId, getUserById, login, register, sendRequestToAdmin } from "../controllers";
+import { confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getUserById, login, register, sendRequestToAdmin } from "../controllers";
 const router = Router();
 
 router.post("/client-register", register);
@@ -11,6 +11,7 @@ router.get("/all-barber", getAllbarber);
 router.get("/all-clients", getAllClients);
 router.get("/all-request", getAllRequest);
 router.get("/all-confirmed-request", getAllConfirmedRequest);
+router.get("/all-confirmed-request/:userId", getAllConfirmedRequestByUserId);
 router.get("/get-info/:id", getUserById);
 
 export default router;

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getMessagesByRoomIdService, sendMessageService } from '../message';
+import { getMessagesByRoomIdService, getNewMessagesByRoomIdService, sendMessageService } from '../message';
 import { addUserToRoomService, createRoomService, getAllRoomsService } from './room.service';
 import { User } from '../../../../shared';
 
@@ -53,6 +53,20 @@ export const getRoomMessages = async (
   try {
     const { roomId } = req.params;
     const messages = await getMessagesByRoomIdService(roomId);
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Error in getRoomMessages:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const getRoomNewMessages = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { roomId } = req.params;
+    const messages = await getNewMessagesByRoomIdService(roomId);
     res.status(200).json(messages);
   } catch (error) {
     console.error('Error in getRoomMessages:', error);

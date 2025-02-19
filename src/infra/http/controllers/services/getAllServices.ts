@@ -9,7 +9,7 @@ export const getAllServices = async (
 ): Promise<Response> => {
   try {
     const { userId } = req.params;
-    const services = await ProfissionalService.find({ userId });
+    const services = await ProfissionalService.find({ userId }).sort({ createdAt: -1 });
     return res.status(200).json(services);
   } catch (error) {
     console.error("Erro ao imprimir lista de servicos:", error);

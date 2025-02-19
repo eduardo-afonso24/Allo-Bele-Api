@@ -21,3 +21,19 @@ export const getMessagesByRoomIdService = async (
     }
 
 }
+
+export const getNewMessagesByRoomIdService = async (
+    roomId: string) => {
+    const room = await Room.findOne({ name: roomId });
+    if (room) {
+        const id = String(room._id);
+        const message = await Message.find({ roomId: id });
+        const newMessages = message.filter(msg => msg.new === true);
+        const sortedMessages = newMessages.sort((a, b) => {
+            return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+        });
+
+        return sortedMessages;
+    }
+
+}

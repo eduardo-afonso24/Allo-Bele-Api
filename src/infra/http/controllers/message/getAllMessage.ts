@@ -9,7 +9,7 @@ export const getAllMessage = async (
 ): Promise<Response> => {
   try {
     const { roomId } = req.params;
-    const message = await Message.find({ roomId });
+    const message = await Message.find({ roomId }).sort({ createdAt: -1 });
     return res.status(200).json(message);
   } catch (error) {
     console.error("Erro ao imprimir lista de mensagens:", error);

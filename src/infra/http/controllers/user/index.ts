@@ -8,3 +8,4 @@ export * from "./confirmRequest";
 export * from "./sendRequestToAdmin";
 export * from "./getAllConfirmedRequest";
 export * from "./getAllRequestByBarberId";
+export * from "./getAllConfirmedRequestByUserId";

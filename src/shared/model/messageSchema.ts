@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
 const MessageSchema = new mongoose.Schema({
-    // clientId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    // barberId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     senderId: { type: String, required: true },
     username: { type: String, required: true },
     message: { type: String },
