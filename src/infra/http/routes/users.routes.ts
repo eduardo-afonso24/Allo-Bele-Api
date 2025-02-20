@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getUserById, login, register, sendRequestToAdmin } from "../controllers";
+import { confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getUserById, login, register, sendRequestToAdmin, updateLocationUser } from "../controllers";
 const router = Router();
 
 router.post("/client-register", register);
@@ -13,5 +13,6 @@ router.get("/all-request", getAllRequest);
 router.get("/all-confirmed-request", getAllConfirmedRequest);
 router.get("/all-confirmed-request/:userId", getAllConfirmedRequestByUserId);
 router.get("/get-info/:id", getUserById);
+router.put("/user-update-location/:id", updateLocationUser);
 
 export default router;
