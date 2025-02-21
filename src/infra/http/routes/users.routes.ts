@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getUserById, login, register, sendRequestToAdmin, updateLocationUser } from "../controllers";
+import { confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getUserById, login, register, sendRequestToAdmin, updateLocationUser, updateUser } from "../controllers";
 const router = Router();
 
 router.post("/client-register", register);
 router.post("/login", login);
+router.put("/update-profile", updateUser);
 router.put("/confirm-request/:requestId", confirmRequest);
 router.post("/send-request-to-admin", sendRequestToAdmin);
 router.get("/get-all-request/:baberId", getAllRequestByBarberId);

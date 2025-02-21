@@ -1,5 +1,6 @@
 export * from "./register";
 export * from "./login";
+export * from "./updateUser";
 export * from "./getAllbarber";
 export * from "./getAllClients";
 export * from "./getUserById";
