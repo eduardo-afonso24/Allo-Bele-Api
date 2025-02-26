@@ -6,6 +6,7 @@ export * from "./getAllClients";
 export * from "./getUserById";
 export * from "./getAllRequest";
 export * from "./confirmRequest";
+export * from "./lockAndUnlockUser";
 export * from "./sendRequestToAdmin";
 export * from "./updateLocationUser";
 export * from "./getAllConfirmedRequest";
