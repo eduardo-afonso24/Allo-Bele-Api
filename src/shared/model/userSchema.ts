@@ -62,20 +62,21 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "ProfissionalService"
   }],
-
   bookmarks: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "BookMark"
   }],
-
   confirmationMessages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "ConfirmationMessage"
   }],
-
   nif: {
     type: String,
     required: [false],
+  },
+  token: {
+    type: String,
+    default: false,
   },
 });
 
