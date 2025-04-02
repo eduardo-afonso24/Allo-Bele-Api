@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { Room } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 export const addUserToRoom = async (req: Request, res: Response) => {
   const { roomId, userId } = req.params;
@@ -13,7 +14,8 @@ export const addUserToRoom = async (req: Request, res: Response) => {
     }
     room.participants.push(userId);
     await room.save();
-
+    const io = getIO();
+    io.to(roomId).emit("userJoined", { roomId, userId });
 
     res.status(200).json({ message: "Sala de mensagens criada com sucesso", room });
   } catch (error) {

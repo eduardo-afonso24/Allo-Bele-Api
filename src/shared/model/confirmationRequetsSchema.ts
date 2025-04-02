@@ -31,7 +31,7 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    file: {
+    type_payment: {
         type: String,
         required: true,
     },

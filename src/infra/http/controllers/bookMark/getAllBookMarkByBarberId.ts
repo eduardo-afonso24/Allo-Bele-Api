@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { BookMark } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 export const getAllBookMarkByBarberId = async (
   req: Request,
@@ -10,6 +11,7 @@ export const getAllBookMarkByBarberId = async (
     const book = await BookMark.find({ barberId })
       .populate('clientId', 'name image address')
       .populate('barberId', 'name profession image address');
+    getIO().emit("bookByBarberId", book);
     return res.status(200).json(book);
   } catch (error) {
     console.error("Erro ao imprimir lista de agendamentos:", error);

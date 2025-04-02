@@ -43,7 +43,7 @@ const UserSchema = new mongoose.Schema({
   },
   status: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   avatar: {
     type: [String],
@@ -72,6 +72,14 @@ const UserSchema = new mongoose.Schema({
   }],
   nif: {
     type: String,
+    required: [false],
+  },
+  verificationByEmailToken: {
+    type: String,
+    required: [false],
+  },
+  verificationByEmailExpires: {
+    type: Date,
     required: [false],
   },
   token: {

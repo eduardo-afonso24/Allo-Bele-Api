@@ -6,7 +6,7 @@ export const getAllConfirmedRequest = async (_: Request, res: Response) => {
   try {
     const request = await ConfirmationRequets.find({ confirmed: true })
       .populate('clientId', '_id image name')
-      .populate('baberId', '_id image name').sort({ createdAt: -1 });
+      .populate('baberId', '_id image name').sort({ timestamp: -1 });
     return res.status(200).json(request);
   } catch (error) {
     console.error('Erro ao listar os pedidos (chamadas) confirmados', error);

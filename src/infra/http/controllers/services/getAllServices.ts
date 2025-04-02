@@ -1,6 +1,6 @@
 
 import { Response, Request } from "express";
-import { ProfissionalService } from "../../../../shared";
+import { ProfissionalService, User } from "../../../../shared";
 
 
 export const getAllServices = async (
@@ -9,6 +9,11 @@ export const getAllServices = async (
 ): Promise<Response> => {
   try {
     const { userId } = req.params;
+    const user = await User.findById(userId);
+
+    // if (user.role === 'barber') {
+
+    // }
     const services = await ProfissionalService.find({ userId }).sort({ createdAt: -1 });
     return res.status(200).json(services);
   } catch (error) {

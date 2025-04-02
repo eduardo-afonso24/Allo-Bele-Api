@@ -1,14 +1,22 @@
 import { Router } from "express";
-import { confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getUserById, lockAndUnlockUser, login, register, sendRequestToAdmin, updateLocationUser, updateUser } from "../controllers";
+import { checkCode, confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getAllRequestById, getUserById, lockAndUnlockUser, login, pushNotification, register, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser } from "../controllers";
+import { forgotPassword } from "../controllers/user/forgotPassword";
+import { resetPassword } from "../controllers/user/resetPassword";
 const router = Router();
 
 router.post("/client-register", register);
 router.post("/login", login);
+router.post("/check-code", checkCode);
+router.post("/social-login", socialLogin);
+router.post("/register-token-push-notification/:userId", pushNotification);
+router.put("/forgot-password", forgotPassword);
+router.put("/reset-password", resetPassword);
 router.put("/update-profile", updateUser);
 router.put("/lock-and-unlock-user/:id", lockAndUnlockUser);
 router.put("/confirm-request/:requestId", confirmRequest);
 router.post("/send-request-to-admin", sendRequestToAdmin);
 router.get("/get-all-request/:baberId", getAllRequestByBarberId);
+router.get("/get-all-request-by-id/:id", getAllRequestById);
 router.get("/all-barber", getAllbarber);
 router.get("/all-clients", getAllClients);
 router.get("/all-request", getAllRequest);

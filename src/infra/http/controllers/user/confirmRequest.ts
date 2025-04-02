@@ -1,5 +1,7 @@
 import { Response, Request } from "express";
-import { ConfirmationRequets } from "../../../../shared";
+import { ConfirmationRequets, PushNotification } from "../../../../shared";
+import { getIO } from "../socket/sockets";
+import { sendPushNotification } from "../../../../helpers/functions/sendPushNotifications";
 
 
 export const confirmRequest = async (req: Request, res: Response) => {
@@ -15,7 +17,25 @@ export const confirmRequest = async (req: Request, res: Response) => {
     const request = await ConfirmationRequets.findByIdAndUpdate(requestId, {
       confirmed
     },
-      { new: true });
+      { new: true })
+      .populate("clientId", "_id image email")
+      .populate("baberId", "_id image email");
+    getIO().emit("confirmRequests", request);
+    const userId = request.clientId._id
+    console.log({userId: userId})
+    const expoToken = await PushNotification.findById(userId);
+
+    console.log({expoToken: expoToken})
+    if (expoToken) {
+      const text = confirmed ? "Pedido confirmado" : "Pedido recusado";
+      const urlScreens = "/screens/client/(tabs)/home";
+      await sendPushNotification(
+        expoToken.token,
+        "Atualização do pedido",
+        text,
+        urlScreens
+      );
+    }
     return res.status(200).json(request);
   } catch (error) {
     console.error('Erro ao confirmar o pedido (chamada)', error);

@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 import { User, ProfissionalService } from "../../../../shared";
 
 export const registerService = async (req: Request, res: Response) => {
-  const { name, price, description } = req.body;
+  const { name, price, description, to } = req.body;
 
   const { userId } = req.params;
 
@@ -20,7 +20,8 @@ export const registerService = async (req: Request, res: Response) => {
       serviceName: name,
       description,
       price,
-      userId
+      userId,
+      to
     })
 
     await service.save();

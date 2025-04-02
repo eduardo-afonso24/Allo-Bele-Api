@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { User, BookMark } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 export const registerBookMark = async (req: Request, res: Response) => {
   const { barberId, appointmentDate } = req.body;
@@ -23,7 +24,7 @@ export const registerBookMark = async (req: Request, res: Response) => {
     })
 
     await book.save();
-
+    getIO().emit("newBook", book);
     res.status(200).json({ message: "Serviço adicionado com sucesso", book });
   } catch (error) {
     res.status(500).json({ message: "Erro ao adicionar serviço", error });

@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { User } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 
 export const updateLocationUser = async (
@@ -26,7 +27,8 @@ export const updateLocationUser = async (
     user.location.longitude = Number(longitude);
 
     const updatedUser = await user.save();
-    console.log({updatedUser})
+    console.log({ updatedUser })
+    getIO().emit("updateLocation", updatedUser);
     return res.status(200).json(updatedUser);
   } catch (error) {
     console.error("Erro ao enviar a localizacao do usuario:", error);
