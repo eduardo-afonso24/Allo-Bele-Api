@@ -1,3 +1,3 @@
 export const GenerateCode = () => {
-    return Math.random().toString(36).slice(-8);
-  };
+  return Math.floor(1000 + Math.random() * 9000).toString();
+};
