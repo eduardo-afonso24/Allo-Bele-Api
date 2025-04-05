@@ -12,6 +12,16 @@ export const pushNotification = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Usuario não encontrado" });
     }
 
+    const expoToken = await PushNotification.findOne({ userId: userId });
+    if (expoToken) {
+      const request = await PushNotification.findByIdAndUpdate(expoToken._id, {
+        token: token
+      },
+        { new: true });
+
+      return res.status(200).json(request);
+    }
+
     const request = new PushNotification({
       userId,
       token

@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Response, Request } from "express";
-import bcrypt from "bcrypt";
 import { User } from "../../../../shared";
-import { GenerateCode } from "../../../../helpers";
 
 
 export const socialLogin = async (
@@ -25,17 +23,11 @@ export const socialLogin = async (
       return res.status(200).json({ user: findUser, token });
     }
 
-    const now = new Date();
-    now.setHours(now.getHours() + 1);
-    const code = GenerateCode();
-
 
     const user = new User({
       name,
       email,
       phone,
-      // verificationByEmailToken: code,
-      // verificationByEmailExpires: now,
       gender,
       image,
       role: "client"

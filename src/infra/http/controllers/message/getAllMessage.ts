@@ -1,4 +1,3 @@
-
 import { Response, Request } from "express";
 import { Message } from "../../../../shared";
 
@@ -9,7 +8,7 @@ export const getAllMessage = async (
 ): Promise<Response> => {
   try {
     const { roomId } = req.params;
-    const message = await Message.find({ roomId }).sort({ createdAt: -1 });
+    const message = await Message.find({ roomId })//.sort({ timestamp: -1 });
     return res.status(200).json(message);
   } catch (error) {
     console.error("Erro ao imprimir lista de mensagens:", error);

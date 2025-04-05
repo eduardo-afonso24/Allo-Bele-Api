@@ -39,6 +39,10 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    new: {
+        type: Boolean,
+        default: false,
+    },
     timestamp: { type: Date, default: Date.now },
 });
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkCode, confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getAllRequestById, getUserById, lockAndUnlockUser, login, pushNotification, register, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser } from "../controllers";
+import { checkCode, clearNotificationRequest, confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getAllRequestById, getUserById, lockAndUnlockUser, login, pushNotification, register, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser } from "../controllers";
 import { forgotPassword } from "../controllers/user/forgotPassword";
 import { resetPassword } from "../controllers/user/resetPassword";
 const router = Router();
@@ -14,6 +14,7 @@ router.put("/reset-password", resetPassword);
 router.put("/update-profile", updateUser);
 router.put("/lock-and-unlock-user/:id", lockAndUnlockUser);
 router.put("/confirm-request/:requestId", confirmRequest);
+router.put("/clear-request/:requestId", clearNotificationRequest);
 router.post("/send-request-to-admin", sendRequestToAdmin);
 router.get("/get-all-request/:baberId", getAllRequestByBarberId);
 router.get("/get-all-request-by-id/:id", getAllRequestById);

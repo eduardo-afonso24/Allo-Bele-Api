@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
-import { BookMark } from "../../../../shared";
+import { BookMark, PushNotification } from "../../../../shared";
+import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
 
 
 export const updateBookMark = async (req: Request, res: Response) => {
@@ -16,6 +17,20 @@ export const updateBookMark = async (req: Request, res: Response) => {
       confirmed
     },
       { new: true });
+
+    const userId = book.clientId._id
+    const expoToken = await PushNotification.findOne({ userId: userId });
+
+    if (expoToken) {
+      const text = confirmed == 1 ? "Agendamento confirmado" : "Agendamento recusado";
+      const urlScreens = "/screens/client/(tabs)/home";
+      await sendPushNotificationExpo(
+        expoToken.token,
+        "Atualização do agendamento",
+        text,
+        urlScreens
+      );
+    }
 
     res.status(200).json({ message: "Agendamento editado com sucesso", book });
   } catch (error) {

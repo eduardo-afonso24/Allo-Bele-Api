@@ -22,7 +22,7 @@ export class SendMail {
             });
 
             await transporter.sendMail({
-                from: "Alo-Belle <oficial@alobele.com>",
+                from: "Alo-Belle <edochagamer615@gmail.com>",
                 to,
                 subject,
                 html,

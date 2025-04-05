@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { ProfissionalService, User } from "../../../../shared";
+import { ProfissionalService } from "../../../../shared";
 
 
 export const deleteService = async (req: Request, res: Response) => {

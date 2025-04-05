@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { ConfirmationRequets, PushNotification } from "../../../../shared";
 import { getIO } from "../socket/sockets";
-import { sendPushNotification } from "../../../../helpers/functions/sendPushNotifications";
+import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
 
 
 export const confirmRequest = async (req: Request, res: Response) => {
@@ -15,21 +15,20 @@ export const confirmRequest = async (req: Request, res: Response) => {
     }
 
     const request = await ConfirmationRequets.findByIdAndUpdate(requestId, {
-      confirmed
+      confirmed,
+      new: true
     },
       { new: true })
       .populate("clientId", "_id image email")
       .populate("baberId", "_id image email");
     getIO().emit("confirmRequests", request);
     const userId = request.clientId._id
-    console.log({userId: userId})
-    const expoToken = await PushNotification.findById(userId);
+    const expoToken = await PushNotification.findOne({ userId: userId });
 
-    console.log({expoToken: expoToken})
     if (expoToken) {
       const text = confirmed ? "Pedido confirmado" : "Pedido recusado";
       const urlScreens = "/screens/client/(tabs)/home";
-      await sendPushNotification(
+      await sendPushNotificationExpo(
         expoToken.token,
         "Atualização do pedido",
         text,
