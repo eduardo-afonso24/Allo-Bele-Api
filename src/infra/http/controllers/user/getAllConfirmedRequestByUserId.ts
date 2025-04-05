@@ -8,7 +8,7 @@ export const getAllConfirmedRequestByUserId = async (req: Request, res: Response
     const request = await ConfirmationRequets.find({ confirmed: true })
       .populate('clientId', '_id image name email')
       .populate('baberId', '_id image name email').sort({ createdAt: -1 });
-    const requests = request.filter(item => String(item.clientId._id) === userId || String(item.baberId._id) === userId);
+    const requests = request.filter(item => String(item?.clientId?._id) === userId || String(item?.baberId?._id) === userId);
 
     return res.status(200).json(requests);
   } catch (error) {
