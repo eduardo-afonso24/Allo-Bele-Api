@@ -4,7 +4,9 @@ import { Pubs } from "../../../../shared";
 
 export const getAllPubs = async (_: Request, res: Response) => {
   try {
-    const pubs = await Pubs.find().sort({ createdAt: -1 });
+    const pubs = await Pubs.find()
+      .sort({ timestamp: -1 })
+      .lean();
     res.status(201).json({ pubs });
   } catch (error) {
     console.error('Erro ao criar publicação', error);

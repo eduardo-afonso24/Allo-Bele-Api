@@ -1,84 +1,53 @@
-import { Response, Request } from "express";
-import { User, Message, Room, PushNotification } from "../../../../shared";
+import { Request, Response } from "express";
+import { User, Message, PushNotification } from "../../../../shared";
 import { getIO } from "../socket/sockets";
-import mongoose from "mongoose";
 import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
+import { createOrGetRoomService } from "../room";
 
 export const sendMessage = async (req: Request, res: Response) => {
-  const { username, message, roomId, senderId } = req.body;
-  // const { senderId } = req.params;
+  const { senderId, receiverId, username, message } = req.body;
   const io = getIO();
 
+  if (!senderId || !receiverId || !username || !message) {
+    return res.status(400).json({ message: "Campos obrigatórios ausentes." });
+  }
+
   try {
-    if (!message || !roomId) {
-      return res.status(400).json({ message: "Os campos mensagem e o id do barbeiro são obrigatórios." });
+    const sender = await User.findById(senderId);
+    if (!sender) {
+      return res.status(404).json({ message: "Usuário remetente não encontrado." });
     }
 
-    const user = await User.findById(senderId);
-    if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
-    }
+    // Usa o serviço para garantir que a sala existe e os dois participantes estão dentro
+    const room = await createOrGetRoomService(senderId, receiverId);
 
-    const userObjectId = new mongoose.Types.ObjectId(senderId);
-
-    let room = await Room.findById(roomId);
-    if (!room) {
-      room = new Room({
-        _id: roomId,
-        name: roomId,
-        participants: [userObjectId],
-      });
-
-      await room.save();
-
-      const newMessage = new Message({
-        senderId,
-        username,
-        message,
-        roomId
-      });
-
-      await newMessage.save();
-      io.emit("roomCreated", room);
-      io.to(roomId).emit("receiveMessage", newMessage);
-
-      const expoToken = await PushNotification.findOne({ userId: senderId });
-
-      if (expoToken) {
-        const text = message.substring(0, 10);
-        const urlScreens = "/screens/client/(tabs)/home";
-        await sendPushNotificationExpo(
-          expoToken.token,
-          "Nova mensagem recebida",
-          text,
-          urlScreens
-        );
-      }
-
-      return res.status(200).json({ message: "Mensagem enviada com sucesso", newMessage });
-    }
-
-    // Garante que o usuário está na lista de participantes (sem duplicatas)
-    if (!room.participants.includes(userObjectId)) {
-      room.participants.push(userObjectId);
-      await room.save();
-    }
-
+    // Cria e salva a nova mensagem
     const newMessage = new Message({
       senderId,
+      receiverId,
       username,
+      receivername: (await User.findById(receiverId))?.name || "",
       message,
-      roomId
+      roomId: room._id,
     });
 
     await newMessage.save();
-    io.to(roomId).emit("receiveMessage", newMessage);
 
-    res.status(200).json({ message: "Mensagem enviada com sucesso", newMessage });
+    // Envia via socket
+    io.to(room._id.toString()).emit("receiveMessage", newMessage);
+
+    // Notificação push
+    const pushToken = await PushNotification.findOne({ userId: receiverId });
+    if (pushToken) {
+      const text = message.length > 30 ? message.slice(0, 27) + "..." : message;
+      const url = "/screens/client/(tabs)/home";
+      await sendPushNotificationExpo(pushToken.token, "Nova mensagem", text, url);
+    }
+
+    return res.status(200).json({ message: "Mensagem enviada com sucesso", newMessage });
 
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
-    res.status(500).json({ message: "Erro ao enviar mensagem", error });
+    return res.status(500).json({ message: "Erro interno ao enviar mensagem", error });
   }
 };
-

@@ -10,7 +10,8 @@ export const getAllBookMarkByBarberId = async (
     const { barberId } = req.params;
     const book = await BookMark.find({ barberId })
       .populate('clientId', 'name image address')
-      .populate('barberId', 'name profession image address');
+      .populate('barberId', 'name profession image address')
+      .lean();
     getIO().emit("bookByBarberId", book);
     return res.status(200).json(book);
   } catch (error) {

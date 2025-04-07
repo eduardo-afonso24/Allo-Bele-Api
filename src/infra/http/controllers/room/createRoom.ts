@@ -1,27 +1,18 @@
-import { Response, Request } from "express";
-import { Room } from "../../../../shared";
-import { getIO } from "../socket/sockets";
+import { Request, Response } from 'express';
+import { createOrGetRoomService } from './room.service';
 
-export const createRoom = async (req: Request, res: Response) => {
-  const { name } = req.body;
-
-
+export const createOrGetRoomController = async (req: Request, res: Response) => {
   try {
+    const { userId, receiverId } = req.body;
 
-    if (!name) {
-      return res.status(400).json({ message: "Os campos mensagem e o id do barbeiro são obrigatórios." });
+    if (!userId || !receiverId) {
+      return res.status(400).json({ error: "userId and receiverId are required" });
     }
 
-    const room = new Room({
-      name
-    })
-
-    await room.save();
-    const io = getIO();
-    io.emit("roomCreated", room);
-
-    res.status(200).json({ message: "Sala de mensagens criada com sucesso", room });
+    const room = await createOrGetRoomService(userId, receiverId);
+    return res.status(200).json(room);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao criar a sala de mensagens", error });
+    console.error("Erro ao criar ou obter sala:", error);
+    return res.status(500).json({ error: "Erro interno no servidor" });
   }
 };

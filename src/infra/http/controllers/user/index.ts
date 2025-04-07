@@ -8,6 +8,10 @@ export * from "./getAllClients";
 export * from "./getUserById";
 export * from "./getAllRequest";
 export * from "./confirmRequest";
+export * from "./iamHereRequest";
+export * from "./deleteRequest";
+export * from "./inTrafficRequest";
+export * from "./isItCompleteRequest";
 export * from "./getAllRequestById"
 export * from "./pushNotification";
 export * from "./lockAndUnlockUser";

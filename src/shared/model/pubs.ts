@@ -12,6 +12,8 @@ const pubsSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
 });
 
+pubsSchema.index({ timestamp: -1 });
+
 export const Pubs = mongoose.model('pubs', pubsSchema);
 
 

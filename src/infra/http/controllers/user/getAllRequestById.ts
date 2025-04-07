@@ -8,9 +8,10 @@ export const getAllRequestById = async (
 ): Promise<Response> => {
   try {
     const { id } = req.params;
-    const request = await ConfirmationRequets.findById(id )
+    const request = await ConfirmationRequets.findById(id)
       .populate('clientId', '_id image name')
       .populate('baberId', '_id image name')
+      .lean();
 
     return res.status(200).json(request);
   } catch (error) {

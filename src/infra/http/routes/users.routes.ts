@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkCode, clearNotificationRequest, confirmRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getAllRequestById, getUserById, lockAndUnlockUser, login, pushNotification, register, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser } from "../controllers";
+import { checkCode, clearNotificationRequest, confirmRequest, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getAllRequestById, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser } from "../controllers";
 import { forgotPassword } from "../controllers/user/forgotPassword";
 import { resetPassword } from "../controllers/user/resetPassword";
 const router = Router();
@@ -14,6 +14,10 @@ router.put("/reset-password", resetPassword);
 router.put("/update-profile", updateUser);
 router.put("/lock-and-unlock-user/:id", lockAndUnlockUser);
 router.put("/confirm-request/:requestId", confirmRequest);
+router.delete("/delete-request/:requestId", deleteRequest);
+router.put("/in-traffic/:requestId", inTrafficRequest);
+router.put("/is-it-complete/:requestId", isItCompleteRequest);
+router.put("/i-am-here/:requestId", iamHereRequest);
 router.put("/clear-request/:requestId", clearNotificationRequest);
 router.post("/send-request-to-admin", sendRequestToAdmin);
 router.get("/get-all-request/:baberId", getAllRequestByBarberId);

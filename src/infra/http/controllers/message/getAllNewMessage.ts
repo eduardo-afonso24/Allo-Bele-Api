@@ -8,13 +8,11 @@ export const getAllNewMessage = async (
   try {
     const { roomId } = req.params;
 
-    const messages = await Message.find({ roomId });
-    const newMessages = messages.filter(msg => msg.new === true);
-    const sortedMessages = newMessages.sort((a, b) => {
-      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    });
+    const newMessages = await Message.find({ roomId, new: true })
+      .sort({ timestamp: -1 })
+      .exec();
 
-    return res.status(200).json(sortedMessages);
+    return res.status(200).json(newMessages);
   } catch (error) {
     console.error("Erro ao imprimir lista de mensagens novas:", error);
     return res

@@ -39,6 +39,18 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    inTraffic: {
+        type: Boolean,
+        default: false,
+    },
+    isItComplete: {
+        type: Boolean,
+        default: false,
+    },
+    iamHere: {
+        type: Boolean,
+        default: false,
+    },
     new: {
         type: Boolean,
         default: false,
@@ -46,5 +58,8 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
 });
 
+ConfirmationRequetsSchema.index({ confirmed: 1, clientId: 1 });
+ConfirmationRequetsSchema.index({ confirmed: 1, baberId: 1 });
+ConfirmationRequetsSchema.index({ timestamp: -1 });
 
 export const ConfirmationRequets = mongoose.model('confirmationRequests', ConfirmationRequetsSchema);

@@ -8,7 +8,10 @@ export const getAllMessage = async (
 ): Promise<Response> => {
   try {
     const { roomId } = req.params;
-    const message = await Message.find({ roomId })//.sort({ timestamp: -1 });
+    const message = await Message.find({ roomId })
+      .populate("senderId", "_id name email image")
+      .populate("receiverId", "_id name email image")
+      .lean();
     return res.status(200).json(message);
   } catch (error) {
     console.error("Erro ao imprimir lista de mensagens:", error);

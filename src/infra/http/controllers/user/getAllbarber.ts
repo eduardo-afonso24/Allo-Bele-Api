@@ -8,7 +8,7 @@ export const getAllbarber = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const barberList = await User.find({ role: "barber" });
+    const barberList = await User.find({ role: "barber" }).lean();
     return res.status(200).json(barberList);
   } catch (error) {
     console.error("Erro ao imprimir lista de barbeiros:", error);

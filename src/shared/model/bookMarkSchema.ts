@@ -8,4 +8,7 @@ const BookMarkSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
 });
 
+BookMarkSchema.index({ clientId: 1 });
+BookMarkSchema.index({ barberId: 1 });
+BookMarkSchema.index({ timestamp: -1 });
 export const BookMark = mongoose.model('BookMark', BookMarkSchema);

@@ -9,12 +9,10 @@ export const getAllServices = async (
 ): Promise<Response> => {
   try {
     const { userId } = req.params;
-    const user = await User.findById(userId);
-
-    // if (user.role === 'barber') {
-
-    // }
-    const services = await ProfissionalService.find({ userId }).sort({ createdAt: -1 });
+    // const user = await User.findById(userId);
+    const services = await ProfissionalService.find({ userId })
+      .sort({ timestamp: -1 })
+      .lean();
     return res.status(200).json(services);
   } catch (error) {
     console.error("Erro ao imprimir lista de servicos:", error);

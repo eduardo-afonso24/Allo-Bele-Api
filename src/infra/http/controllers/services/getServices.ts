@@ -8,7 +8,9 @@ export const getServices = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const services = await ProfissionalService.find({}).sort({ createdAt: -1 });
+    const services = await ProfissionalService.find({})
+      .sort({ timestamp: -1 })
+      .lean();
     return res.status(200).json(services);
   } catch (error) {
     console.error("Erro ao imprimir lista de servicos:", error);

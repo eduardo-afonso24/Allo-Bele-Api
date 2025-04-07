@@ -8,7 +8,7 @@ export const getAllClients = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const clientsList = await User.find({ role: "client" });
+    const clientsList = await User.find({ role: "client" }).lean();
     return res.status(200).json(clientsList);
   } catch (error) {
     console.error("Erro ao imprimir lista de clientes:", error);
