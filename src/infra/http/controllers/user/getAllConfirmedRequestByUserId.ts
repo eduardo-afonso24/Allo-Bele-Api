@@ -12,7 +12,7 @@ export const getAllConfirmedRequestByUserId = async (req: Request, res: Response
         { baberId: userId }
       ]
     })
-      .populate('clientId', '_id image name email')
+      .populate('clientId', '_id image name email phone')
       .populate('baberId', '_id image name email')
       .sort({ timestamp: -1 })
       .lean();
