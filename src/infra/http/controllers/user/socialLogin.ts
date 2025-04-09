@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Response, Request } from "express";
 import { User } from "../../../../shared";
+import { GenerateCode } from "../../../../helpers";
 
 
 export const socialLogin = async (
@@ -19,17 +20,17 @@ export const socialLogin = async (
         expiresIn: "60d",
       });
 
-      // Retorna o usuário e o token de autenticação
-      return res.status(200).json({ user: findUser, token });
+      return res.status(200).json({ user: findUser, token: token });
     }
 
-
+    const password = GenerateCode()
     const user = new User({
       name,
       email,
       phone,
       gender,
       image,
+      password: password,
       role: "client"
     });
 

@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { ConfirmationRequets, PushNotification } from "../../../../shared";
+import { ConfirmationRequets, PushNotification, User } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
 
@@ -21,6 +21,7 @@ export const isItCompleteRequest = async (req: Request, res: Response) => {
       .populate("clientId", "_id image email")
       .populate("baberId", "_id image email");
     getIO().emit("confirmRequests", request);
+    const barberId = request.baberId._id
     const userId = request.clientId._id
     const expoToken = await PushNotification.findOne({ userId: userId });
 
@@ -33,6 +34,17 @@ export const isItCompleteRequest = async (req: Request, res: Response) => {
         text,
         urlScreens
       );
+    }
+
+    const findBarber = await User.findById(barberId);
+    if (findBarber && isItComplete) {
+      console.log({ isItComplete: isItComplete })
+      const barber = await User.findByIdAndUpdate(barberId, {
+        occupied: false
+      },
+        { new: true });
+
+      console.log({ barber: barber })
     }
     return res.status(200).json(request);
   } catch (error) {

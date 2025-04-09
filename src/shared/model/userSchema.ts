@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    required: [true, "Please enter your phone number"],
+    required: false,
   },
   gender: {
     type: String,
@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please enter your password"],
-    minLength: [6, "Password must be at least 6 characters long"],
+    minLength: [4, "Password must be at least 4 characters long"],
   },
   address: {
     type: String,
@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema({
   status: {
     type: Boolean,
     default: true,
+  },
+  occupied: {
+    type: Boolean,
+    default: false,
   },
   avatar: {
     type: [String],

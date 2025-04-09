@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { ConfirmationRequets, PushNotification } from "../../../../shared";
+import { ConfirmationRequets, PushNotification, User } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
 
@@ -18,6 +18,7 @@ export const deleteRequest = async (req: Request, res: Response) => {
     const request = await ConfirmationRequets.findByIdAndDelete(requestId)
 
     getIO().emit("confirmRequests", findRequest);
+    const barberId = findRequest.baberId._id
     const userId = findRequest.clientId._id
     const expoToken = await PushNotification.findOne({ userId: userId });
 
@@ -31,6 +32,17 @@ export const deleteRequest = async (req: Request, res: Response) => {
         urlScreens
       );
     }
+
+    const findBarber = await User.findById(barberId);
+    if (findBarber) {
+      const barber = await User.findByIdAndUpdate(barberId, {
+        occupied: false
+      },
+        { new: true });
+
+      console.log({ barber: barber })
+    }
+
     return res.status(200).json(request);
   } catch (error) {
     console.error('Erro ao cancelar o pedido (chamada)', error);
