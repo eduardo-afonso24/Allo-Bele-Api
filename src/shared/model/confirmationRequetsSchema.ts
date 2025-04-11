@@ -13,11 +13,11 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
     baberId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: false
     },
     baberName: {
         type: String,
-        required: true
+        required: false
     },
     selectedServices: [{
         _id: String,

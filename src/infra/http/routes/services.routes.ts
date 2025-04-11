@@ -3,7 +3,7 @@ import { deleteService, getAllServices, getServices, registerService, updateServ
 const router = Router();
 
 router.post("/services/:userId", registerService);
-router.get("/services/:userId", getAllServices)
+router.get("/services/:category", getAllServices)
 router.get("/services", getServices)
 router.delete("/services/:serviceId", deleteService)
 router.put("/services/:serviceId", updateService)

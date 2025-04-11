@@ -5,12 +5,11 @@ import { getIO } from "../socket/sockets";
 
 export const sendRequestToAdmin = async (req: Request, res: Response) : Promise<Response>  => {
   try {
-    const { baberId, clientId, selectedServices, totalPrice, type_payment } = req.body;
-    const baber = await User.findById(baberId);
+    const { clientId, selectedServices, totalPrice, type_payment } = req.body;
     const client = await User.findById(clientId);
 
-    if (!client || !baber) {
-      return res.status(404).json({ message: 'Cliente ou Barbearia não encontrados.' });
+    if (!client) {
+      return res.status(404).json({ message: 'Cliente não encontrado.' });
     }
 
     if (!Array.isArray(selectedServices)) {
@@ -22,8 +21,6 @@ export const sendRequestToAdmin = async (req: Request, res: Response) : Promise<
     const NewRequest = new ConfirmationRequets({
       clientId,
       clientName: client.name,
-      baberId,
-      baberName: baber.name,
       selectedServices,
       totalPrice,
       type_payment: type_payment,
