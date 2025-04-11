@@ -4,13 +4,14 @@ const ProfissionalServiceSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   serviceName: { type: String, required: true },
   price: { type: Number, required: true },
-  to: { type: Number, default: 0 },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   description: { type: String },
   timestamp: { type: Date, default: Date.now },
 });
 
 
 ProfissionalServiceSchema.index({ userId: 1 });
+ProfissionalServiceSchema.index({ category: 1 });
 ProfissionalServiceSchema.index({ timestamp: -1 });
 
 export const ProfissionalService = mongoose.model('ProfissionalService', ProfissionalServiceSchema);

@@ -1,8 +1,8 @@
 import { Response, Request } from "express";
-import { User, ProfissionalService } from "../../../../shared";
+import { User, ProfissionalService, Category } from "../../../../shared";
 
 export const registerService = async (req: Request, res: Response) => {
-  const { name, price, description, to } = req.body;
+  const { name, price, description, category } = req.body;
 
   const { userId } = req.params;
 
@@ -10,6 +10,11 @@ export const registerService = async (req: Request, res: Response) => {
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    const findCategory = await Category.findById(category);
+    if (!findCategory) {
+      return res.status(404).json({ message: "Categoria não encontrada" });
     }
 
     if (!name || !price) {
@@ -21,7 +26,7 @@ export const registerService = async (req: Request, res: Response) => {
       description,
       price,
       userId,
-      to
+      category
     })
 
     await service.save();

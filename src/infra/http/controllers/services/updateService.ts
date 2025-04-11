@@ -4,7 +4,7 @@ import { ProfissionalService } from "../../../../shared";
 
 export const updateService = async (req: Request, res: Response) => {
   const { serviceId } = req.params;
-  const { serviceName, price, to, description } = req.body;
+  const { serviceName, price, category, description } = req.body;
 
   try {
     const findService = await ProfissionalService.findById(serviceId);
@@ -15,20 +15,20 @@ export const updateService = async (req: Request, res: Response) => {
     console.log({
       serviceName: serviceName?.trim() !== "" ? serviceName : findService.serviceName,
       price: price ? price : findService.price,
-      to: to ? to : findService.to,
+      category: category ? category : findService.category,
       description: description ? description : findService.description,
     })
     const service = await ProfissionalService.findByIdAndUpdate(serviceId, {
       serviceName: serviceName ? serviceName : findService.serviceName,
       price: price ? price : findService.price,
-      to: to ? to : findService.to,
+      category: category ? category : findService.category,
       description: description ? description : findService.description,
     },
       { new: true });
 
     console.log({ service })
 
-    console.log({ serviceName, price, to, description })
+    console.log({ serviceName, price, category, description })
 
     res.status(200).json({ message: "Serviço editado com sucesso", service });
   } catch (error) {
