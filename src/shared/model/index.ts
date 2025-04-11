@@ -7,3 +7,4 @@ export * from "./confirmationMessagesSchema";
 export * from "./professionalServicesSchema";
 export * from "./confirmationRequetsSchema";
 export * from "./pushNotification";
+export * from "./categorySchema";
