@@ -26,6 +26,7 @@ export const iamHereRequest = async (req: Request, res: Response) => {
     const expoToken = await PushNotification.findOne({ userId: userId });
 
     if (expoToken) {
+      console.log({ iamHere: iamHere })
       const text = iamHere ? `O professional ${barberName} já chegou!` : `O professional ${barberName} está a caminho!`;
       const urlScreens = "/screens/client/(tabs)/home";
       await sendPushNotificationExpo(
