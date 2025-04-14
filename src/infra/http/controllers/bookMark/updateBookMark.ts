@@ -1,11 +1,11 @@
 import { Response, Request } from "express";
-import { BookMark, PushNotification } from "../../../../shared";
+import { BookMark, Category, PushNotification, User } from "../../../../shared";
 import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
 
 
 export const updateBookMark = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { confirmed } = req.body;
+  const { confirmed, barberId } = req.body;
 
   try {
     const findBook = await BookMark.findById(id);
@@ -13,10 +13,42 @@ export const updateBookMark = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Agendamento não encontrado" });
     }
 
+    const findBarber = await User.findById(barberId);
+    if (!findBarber) {
+      return res.status(404).json({ message: "Professional não encontrado" });
+    }
+
     const book = await BookMark.findByIdAndUpdate(id, {
-      confirmed
+      confirmed,
+      barberId
+    },
+      { new: true })
+      .populate("clientId", "_id image email")
+      .populate("barberId", "_id image email");
+
+    const updateBarber = await User.findByIdAndUpdate(barberId, {
+      occupied: confirmed === 1 ? true : false
     },
       { new: true });
+
+    console.log({ book: book })
+
+    if (updateBarber) {
+      const expoToken = await PushNotification.findOne({ userId: updateBarber._id });
+      const category = await Category.findById(book.category?._id);
+
+      if (expoToken) {
+        const text = `Serviço agendado : ${category?.name}`;
+        const urlScreens = "/screens/client/(tabs)/home";
+        const title = confirmed == 1 ? "Agendamento confirmado" : "Agendamento recusado";
+        await sendPushNotificationExpo(
+          expoToken.token,
+          title,
+          text,
+          urlScreens
+        );
+      }
+    }
 
     const userId = book.clientId._id
     const expoToken = await PushNotification.findOne({ userId: userId });

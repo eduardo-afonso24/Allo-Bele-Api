@@ -10,6 +10,7 @@ export const getAllBookMark = async (
     const book = await BookMark.find()
       .populate('clientId', 'name address')
       .populate('barberId', 'name address')
+      .populate('category', 'name')
       .sort({ timestamp: -1 })
       .lean();
     getIO().emit("getAllBook", book);

@@ -6,4 +6,4 @@ const CategorySchema = new mongoose.Schema({
 });
 
 CategorySchema.index({ timestamp: -1 });
-export const Category = mongoose.model('BookMark', CategorySchema);
+export const Category = mongoose.model('Category', CategorySchema);

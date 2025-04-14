@@ -17,6 +17,7 @@ export const getAllServices = async (
 
     // Buscar todos os serviços que correspondem à categoria
     const services = await ProfissionalService.find({ category: category })
+      .populate('category', '_id name')
       .lean();
 
     console.log({ findCategory: findCategory });

@@ -9,6 +9,7 @@ export const getServices = async (
 ): Promise<Response> => {
   try {
     const services = await ProfissionalService.find({})
+      .populate('category', '_id name')
       .sort({ timestamp: -1 })
       .lean();
     return res.status(200).json(services);
