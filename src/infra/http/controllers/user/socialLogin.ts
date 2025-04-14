@@ -11,14 +11,20 @@ export const socialLogin = async (
   try {
     const { email, name, phone, gender, image } = req.body;
 
-    console.log({ email })
 
     const findUser = await User.findOne({ email });
     if (findUser) {
+
+      if (findUser.isBlocked === true) {
+        return res.status(423).json({ message: "Usuario bloqueado!" });
+      }
+
       const role = findUser.role
       const token = jwt.sign({ userId: findUser._id, role }, "alloBelleSecretKey01", {
         expiresIn: "60d",
       });
+
+
 
       return res.status(200).json({ user: findUser, token: token });
     }

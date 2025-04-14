@@ -13,7 +13,7 @@ export const lockAndUnlockUser = async (req: Request, res: Response) => {
     }
 
     const request = await User.findByIdAndUpdate(id, {
-      status
+      isBlocked: status
     },
       { new: true });
     return res.status(200).json(request);

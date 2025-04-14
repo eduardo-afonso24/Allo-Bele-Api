@@ -53,6 +53,10 @@ export const login = async (
 
     }
 
+    if (user.isBlocked === true) {
+      return res.status(423).json({ message: "Usuario bloqueado!" });
+    }
+
     // Gera o token de autenticação
     const token = jwt.sign({ userId: user._id, role }, "alloBelleSecretKey01", {
       expiresIn: "60d",
