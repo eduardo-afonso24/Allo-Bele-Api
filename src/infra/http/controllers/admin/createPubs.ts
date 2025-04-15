@@ -22,9 +22,6 @@ export const createPubs = async (req: Request, res: Response) => {
       return res.status(500).json({ message: 'Erro ao fazer upload do arquivo.' });
     }
 
-    console.log('Fields:', fields);
-    console.log('Files:', files);
-
     const file = Array.isArray(files.image) ? files.image[0] : files.image;
     if (!file || !file.filepath) {
       console.error('Nenhum arquivo enviado ou arquivo inválido');
