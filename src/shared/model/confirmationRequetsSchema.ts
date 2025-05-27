@@ -23,6 +23,7 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
         _id: String,
         description: String,
         price: Number,
+        quantity: Number,
         serviceName: String,
         timestamp: Date,
         userId: String,
