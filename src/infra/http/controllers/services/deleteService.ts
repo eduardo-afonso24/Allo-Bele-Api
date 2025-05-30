@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { ProfissionalService } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 
 export const deleteService = async (req: Request, res: Response) => {
@@ -12,6 +13,9 @@ export const deleteService = async (req: Request, res: Response) => {
     }
 
     await ProfissionalService.findByIdAndDelete(serviceId);
+    const updatedServices = await ProfissionalService.find();
+    getIO().emit("services", updatedServices);
+    console.log({ updatedServices: updatedServices })
 
     res.status(200).json({ message: "Serviço removido com sucesso" });
   } catch (error) {
