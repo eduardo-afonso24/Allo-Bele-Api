@@ -4,6 +4,7 @@ import fs from 'fs';
 import { Fields, Files, IncomingForm } from "formidable";
 import { Response, Request } from "express";
 import { ProfissionalService, Category } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadDir = path.join(__dirname, '../../../../uploads');
@@ -50,9 +51,11 @@ export const updateService = async (req: Request, res: Response) => {
       },
         { new: true });
 
-      console.log({ service })
-
-      console.log({ serviceName: name, price, category, description })
+      const updatedServices = await ProfissionalService.find({})
+        .populate('category', '_id name')
+        .sort({ timestamp: -1 })
+        .lean();
+      getIO().emit("services", updatedServices);
 
       res.status(200).json({ message: "Serviço editado com sucesso", service });
     } catch (error) {
