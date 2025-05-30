@@ -22,6 +22,7 @@ const UserSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
+    unique: [true, "Email Already Exists"],
     required: false,
   },
   gender: {
