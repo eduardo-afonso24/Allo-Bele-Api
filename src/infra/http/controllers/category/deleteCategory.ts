@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { Category } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 
 export const deleteCategory = async (req: Request, res: Response) => {
@@ -12,6 +13,10 @@ export const deleteCategory = async (req: Request, res: Response) => {
     }
 
     await Category.findByIdAndDelete(id);
+    const updatedCategory = await Category.find({})
+      .sort({ timestamp: -1 })
+      .lean();
+    getIO().emit("category", updatedCategory);
 
     res.status(200).json({ message: "Categoria removida com sucesso" });
   } catch (error) {
