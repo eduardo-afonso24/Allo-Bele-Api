@@ -1,3 +1,4 @@
+// sockets.ts
 import { Server, Socket } from "socket.io";
 import { sendMessageService } from "../message";
 // import { addUserToRoomService } from "../room";
@@ -6,6 +7,7 @@ let io: Server;
 
 export const initSocket = (server: any) => {
   io = new Server(server, {
+    path: "/api/socket.io",
     cors: { origin: "*", methods: ["GET", "POST"] },
   });
 

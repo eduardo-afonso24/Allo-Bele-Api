@@ -3,7 +3,7 @@ import { ConfirmationRequets, User } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 
 
-export const sendRequestToAdmin = async (req: Request, res: Response) : Promise<Response>  => {
+export const sendRequestToAdmin = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { clientId, selectedServices, totalPrice, type_payment } = req.body;
     const client = await User.findById(clientId);

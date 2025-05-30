@@ -7,15 +7,17 @@ export const lockAndUnlockUser = async (req: Request, res: Response) => {
   const { status } = req.body;
   try {
 
+    console.log({ status })
     const findRequest = await User.findById(id);
     if (!findRequest) {
       return res.status(404).json({ message: "Usuario não encontrado" });
     }
 
     const request = await User.findByIdAndUpdate(id, {
-      isBlocked: status
+      status: status
     },
       { new: true });
+    console.log({ request: request })
     return res.status(200).json(request);
   } catch (error) {
     console.error('Erro ao bloquear ou desbloquear o usuario', error);
