@@ -28,7 +28,10 @@ export const confirmRequest = async (req: Request, res: Response) => {
       { new: true })
       .populate("clientId", "_id image email")
       .populate("baberId", "_id image email");
-    getIO().emit("confirmRequests", request);
+    const updatedRequest = await ConfirmationRequets.find({})
+      .populate('clientId', '_id image name email phone location')
+      .populate('baberId', '_id image name email location').sort({ timestamp: -1 }).lean();
+    getIO().emit("request", updatedRequest);
 
     const updateBarber = await User.findByIdAndUpdate(barber._id, {
       occupied: confirmed
