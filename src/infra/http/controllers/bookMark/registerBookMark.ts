@@ -29,7 +29,13 @@ export const registerBookMark = async (req: Request, res: Response) => {
     })
 
     await book.save();
-    getIO().emit("newBook", book);
+    const updatedBook = await BookMark.find()
+      .populate('clientId', 'name address')
+      .populate('barberId', 'name address')
+      .populate('category', 'name')
+      .sort({ timestamp: -1 })
+      .lean();
+    getIO().emit("getAllBook", updatedBook);
     res.status(200).json({ message: "Agendamento adicionado com sucesso", book });
   } catch (error) {
     res.status(500).json({ message: "Erro ao adicionar agendamento", error });
