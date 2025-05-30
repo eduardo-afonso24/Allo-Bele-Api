@@ -36,7 +36,10 @@ export const createPubs = async (req: Request, res: Response) => {
         image: imagensUrl ? imagensUrl : "",
       });
       const pub = await newPub.save();
-      getIO().emit("newPubs", pub);
+      const updatedPub = await Pubs.find({})
+        .sort({ timestamp: -1 })
+        .lean();
+      getIO().emit("pubs", updatedPub);
       res.status(201).json({ message: 'Publicação criada com sucesso', pub });
     } catch (error) {
       console.error('Erro ao criar publicação', error);
