@@ -9,6 +9,7 @@ export const initSocket = (server: any) => {
   io = new Server(server, {
     path: "/api/socket.io",
     cors: { origin: "*", methods: ["GET", "POST"] },
+    transports: ["websocket", "polling"],
   });
 
   io.on("connection", (socket: Socket) => {
