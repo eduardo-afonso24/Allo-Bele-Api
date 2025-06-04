@@ -1,52 +1,83 @@
 // sockets.ts
 import { Server, Socket } from "socket.io";
-import { sendMessageService } from "../message";
-// import { addUserToRoomService } from "../room";
+import { Message, PushNotification, User } from "../../../../shared";
+import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
+import { createOrGetRoomService } from "../room";
 
 let io: Server;
 
 export const initSocket = (server: any) => {
   io = new Server(server, {
     path: "/api/socket.io",
-    cors: { origin: "*", methods: ["GET", "POST"] },
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
     transports: ["websocket", "polling"],
   });
 
   io.on("connection", (socket: Socket) => {
     console.log(`🔥 Novo usuário conectado: ${socket.id}`);
 
-    // socket.on("joinRoom", async ({ roomId, userId }) => {
-    //   try {
-    //     console.log("CALL JOIN ROOM ")
-    //     const room = await addUserToRoomService(roomId, userId as string);
-    //     const newRoomId = String(room._id);
-    //     socket.join(newRoomId);
-    //     console.log(`👤 ${userId} entrou na sala: ${newRoomId}`);
+    // Entrar em uma sala
+    socket.on("joinRoom", (roomId: string) => {
+      socket.join(roomId);
+      console.log(`Usuário ${socket.id} entrou na sala ${roomId}`);
+    });
 
-    //     // Notifica os usuários da sala que um novo usuário entrou
-    //     const data = { newRoomId, userId }
-    //     // socket.to(newRoomId).emit("userJoined", data);
-    //     socket.emit("userJoined", data);
-    //     console.log({ newRoomId, userId })
-    //     console.log("Depois de emitir")
-    //   } catch (error) {
-    //     console.error("Erro ao criar a sala :", error);
-    //   }
-    // });
-
-    socket.on("sendMessage", async ({ roomId, senderId, username, text }) => {
+    // Enviar mensagem para um usuário
+    socket.on("sendMessage", async ({ senderId, receiverId, message }) => {
       try {
-        const data_message = { senderId, username, text, roomId, timestamp: new Date() };
-        console.log({ data_message: data_message })
-        const message = text;
-        const newMessage = await sendMessageService(username, message, roomId, senderId);
+        // Cria ou obtém a sala entre os dois usuários
+        const room = await createOrGetRoomService(senderId, receiverId);
 
-        io.to(roomId).emit("receiveMessage", newMessage);
-        console.log(`📩 ${username} enviou uma mensagem na sala ${roomId}`);
+        // Cria e salva a nova mensagem
+        const newMessage = new Message({
+          senderId,
+          receiverId,
+          roomId: room._id,
+          username: (await User.findById(senderId))?.name || "",
+          receivername: (await User.findById(receiverId))?.name || "",
+          message,
+        });
+
+        await newMessage.save();
+
+        // Emite a nova mensagem para todos na sala
+        io.to(room._id.toString()).emit("receiveMessage", newMessage);
+
+        // Envia notificação push
+        const pushToken = await PushNotification.findOne({ userId: receiverId });
+        if (pushToken) {
+          const preview = message.length > 30 ? message.slice(0, 27) + "..." : message;
+          await sendPushNotificationExpo(
+            pushToken.token,
+            "Nova mensagem",
+            preview,
+            "/screens/client/(tabs)/home"
+          );
+        }
+
       } catch (error) {
-        console.error("Erro ao processar mensagem:", error);
+        console.error("Erro ao enviar mensagem via socket:", error);
+        socket.emit("messageError", "Erro ao enviar mensagem");
       }
     });
+
+    socket.on("createOrJoinRoom", async ({ senderId, receiverId }, callback) => {
+      try {
+        const room = await createOrGetRoomService(senderId, receiverId);
+        socket.join(room._id.toString());
+        console.log(`Usuário ${socket.id} entrou/criou a sala ${room._id}`);
+
+        // Retorna dados da sala para o cliente via callback
+        callback({ success: true, roomId: room._id });
+      } catch (error) {
+        console.error("Erro ao criar ou entrar na sala:", error);
+        callback({ success: false, error: "Erro ao criar ou entrar na sala" });
+      }
+    });
+
 
     socket.on("disconnect", () => {
       console.log(`⚠️ Usuário desconectado: ${socket.id}`);
