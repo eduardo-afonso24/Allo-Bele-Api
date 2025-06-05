@@ -6,7 +6,9 @@ import { GenerateCode, SendMail } from "../../../../helpers";
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { identifier, password } = req.body;
+    const { email, password } = req.body;
+
+    const identifier = email;
 
     if (!identifier || !password) {
       return res.status(400).json({ message: "Email ou telefone e senha são obrigatórios." });
