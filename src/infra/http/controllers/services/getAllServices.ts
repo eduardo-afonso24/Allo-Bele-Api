@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { Category, ProfissionalService, User } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 export const getAllServices = async (
   req: Request,
@@ -20,8 +21,7 @@ export const getAllServices = async (
       .populate('category', '_id name')
       .lean();
 
-    console.log({ findCategory: findCategory });
-    console.log({ services: services });
+    getIO().emit("servicesByCategory", services);
 
     // Retorna os serviços filtrados
     return res.status(200).json(services);

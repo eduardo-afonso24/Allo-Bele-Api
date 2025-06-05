@@ -1,6 +1,7 @@
 
 import { Response, Request } from "express";
 import { ProfissionalService } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 
 export const getServices = async (
@@ -12,6 +13,7 @@ export const getServices = async (
       .populate('category', '_id name')
       .sort({ timestamp: -1 })
       .lean();
+    getIO().emit("services", services);
     return res.status(200).json(services);
   } catch (error) {
     console.error("Erro ao imprimir lista de servicos:", error);

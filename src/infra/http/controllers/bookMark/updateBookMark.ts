@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { BookMark, Category, PushNotification, User } from "../../../../shared";
 import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
+import { getIO } from "../socket/sockets";
 
 
 export const updateBookMark = async (req: Request, res: Response) => {
@@ -30,8 +31,6 @@ export const updateBookMark = async (req: Request, res: Response) => {
       occupied: confirmed === 1 ? true : false
     },
       { new: true });
-
-    console.log({ book: book })
 
     if (updateBarber) {
       const expoToken = await PushNotification.findOne({ userId: updateBarber._id });
@@ -63,6 +62,14 @@ export const updateBookMark = async (req: Request, res: Response) => {
         urlScreens
       );
     }
+
+    const updatedBook = await BookMark.find()
+      .populate('clientId', 'name address')
+      .populate('barberId', 'name address')
+      .populate('category', 'name')
+      .sort({ timestamp: -1 })
+      .lean();
+    getIO().emit("getAllBook", updatedBook);
 
     res.status(200).json({ message: "Agendamento editado com sucesso", book });
   } catch (error) {

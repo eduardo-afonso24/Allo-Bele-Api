@@ -16,8 +16,6 @@ export const deleteRequest = async (req: Request, res: Response) => {
     }
 
     const request = await ConfirmationRequets.findByIdAndDelete(requestId)
-
-    getIO().emit("confirmRequests", findRequest);
     const barberId = findRequest.baberId._id
     const userId = findRequest.clientId._id
     const expoToken = await PushNotification.findOne({ userId: userId });
@@ -39,10 +37,12 @@ export const deleteRequest = async (req: Request, res: Response) => {
         occupied: false
       },
         { new: true });
-
-      console.log({ barber: barber })
     }
 
+    const updatedRequest = await ConfirmationRequets.find({})
+      .populate('clientId', '_id image name email phone location')
+      .populate('baberId', '_id image name email location').sort({ timestamp: -1 }).lean();
+    getIO().emit("request", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
     console.error('Erro ao cancelar o pedido (chamada)', error);

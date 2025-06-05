@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { Category } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 
 export const updateCategory = async (req: Request, res: Response) => {
@@ -16,6 +17,11 @@ export const updateCategory = async (req: Request, res: Response) => {
       name
     },
       { new: true });
+
+    const updatedCategory = await Category.find({})
+      .sort({ timestamp: -1 })
+      .lean();
+    getIO().emit("category", updatedCategory);
 
     res.status(200).json({ message: "Categoria editada com sucesso", category });
   } catch (error) {

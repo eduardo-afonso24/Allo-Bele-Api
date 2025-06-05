@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
-import { ProfissionalService, Pubs, User } from "../../../../shared";
+import { Pubs } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 
 export const deletePubs = async (req: Request, res: Response) => {
@@ -12,6 +13,10 @@ export const deletePubs = async (req: Request, res: Response) => {
     }
 
     await Pubs.findByIdAndDelete(id);
+    const updatedPub = await Pubs.find({})
+      .sort({ timestamp: -1 })
+      .lean();
+    getIO().emit("pubs", updatedPub);
 
     res.status(200).json({ message: "Post removido com sucesso" });
   } catch (error) {

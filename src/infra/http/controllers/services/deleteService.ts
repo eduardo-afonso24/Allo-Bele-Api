@@ -13,9 +13,11 @@ export const deleteService = async (req: Request, res: Response) => {
     }
 
     await ProfissionalService.findByIdAndDelete(serviceId);
-    const updatedServices = await ProfissionalService.find();
+    const updatedServices = await ProfissionalService.find({})
+      .populate('category', '_id name')
+      .sort({ timestamp: -1 })
+      .lean();
     getIO().emit("services", updatedServices);
-    console.log({ updatedServices: updatedServices })
 
     res.status(200).json({ message: "Serviço removido com sucesso" });
   } catch (error) {

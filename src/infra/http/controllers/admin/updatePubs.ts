@@ -4,6 +4,7 @@ import fs from 'fs';
 import { Fields, Files, IncomingForm } from "formidable";
 import { Response, Request } from "express";
 import { Pubs, User } from "../../../../shared";
+import { getIO } from "../socket/sockets";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadDir = path.join(__dirname, '../../../../uploads');
@@ -42,6 +43,10 @@ export const updatePubs = async (req: Request, res: Response) => {
         image: avatarUrl ? avatarUrl : existingPubs.image,
       },
         { new: true });
+      const updatedPub = await Pubs.find({})
+        .sort({ timestamp: -1 })
+        .lean();
+      getIO().emit("pubs", updatedPub);
       return res.status(200).json({ pubs });
     } catch (error) {
       console.error("Erro ao atualizar os dados do post:", error);
