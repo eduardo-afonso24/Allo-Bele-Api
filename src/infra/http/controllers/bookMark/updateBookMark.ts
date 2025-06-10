@@ -106,7 +106,7 @@ export const updateBookMark = async (req: Request, res: Response) => {
       .populate('category', 'name')
       .sort({ timestamp: -1 })
       .lean();
-    const bookByClientId = await BookMark.find({ userId })
+    const bookByClientId = await BookMark.find({ clientId: userId })
       .populate('clientId', 'name image address')
       .populate('barberId', 'name profession image address')
       .lean();

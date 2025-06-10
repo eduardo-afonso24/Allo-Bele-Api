@@ -6,10 +6,6 @@ import { getAllNewMessage } from '../controllers/message/getAllNewMessage';
 import { getAllRoom, getRoomByParticipants } from '../controllers/room';
 
 const router = Router();
-
-// router.post('/join', createOrGetRoomController);
-
-// router.post('/message', sendMessage);
 router.get('/messages/:roomId', getAllMessage);
 router.get('/new-messages/:roomId', getAllNewMessage);
 

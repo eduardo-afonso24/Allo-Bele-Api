@@ -31,7 +31,6 @@ export const confirmRequest = async (req: Request, res: Response) => {
     const updatedRequest = await ConfirmationRequets.find({})
       .populate('clientId', '_id image name email phone location')
       .populate('baberId', '_id image name email location').sort({ timestamp: -1 }).lean();
-    getIO().emit("request", updatedRequest);
 
     const updateBarber = await User.findByIdAndUpdate(barber._id, {
       occupied: confirmed
@@ -68,7 +67,20 @@ export const confirmRequest = async (req: Request, res: Response) => {
     }
 
 
+    const requestByUserId = await ConfirmationRequets.find({
+      confirmed: true,
+      $or: [
+        { clientId: userId },
+        { baberId: userId }
+      ]
+    })
+      .populate('clientId', '_id image name email phone')
+      .populate('baberId', '_id image name email')
+      .sort({ timestamp: -1 })
+      .lean();
 
+    getIO().emit("requestByUserId", requestByUserId);
+    getIO().emit("request", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
     console.error('Erro ao confirmar o pedido (chamada)', error);
