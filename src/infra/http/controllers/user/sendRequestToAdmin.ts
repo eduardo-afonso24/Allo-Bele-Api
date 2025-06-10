@@ -30,7 +30,7 @@ export const sendRequestToAdmin = async (req: Request, res: Response): Promise<R
     const updatedRequest = await ConfirmationRequets.find({})
       .populate('clientId', '_id image name email phone location')
       .populate('baberId', '_id image name email location').sort({ timestamp: -1 }).lean();
-    getIO().emit("request", updatedRequest);
+    getIO().emit("AllRequest", updatedRequest);
     res.status(200).json({ message: 'Os dados foram enviados com sucesso', NewRequest });
   } catch (error) {
     console.error('Erro ao enviar request', error);

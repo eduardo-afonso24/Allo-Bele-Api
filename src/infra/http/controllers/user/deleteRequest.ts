@@ -15,7 +15,10 @@ export const deleteRequest = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Pedido(chamada) não encontrado" });
     }
 
-    const request = await ConfirmationRequets.findByIdAndDelete(requestId)
+    const request = await ConfirmationRequets.findByIdAndUpdate(requestId, {
+      isDeleted: true
+    },
+      { new: true });
     const barberId = findRequest.baberId._id
     const userId = findRequest.clientId._id
     const expoToken = await PushNotification.findOne({ userId: userId });
@@ -39,10 +42,10 @@ export const deleteRequest = async (req: Request, res: Response) => {
         { new: true });
     }
 
-    const updatedRequest = await ConfirmationRequets.find({})
+    const updatedRequest = await ConfirmationRequets.find({ confirmed: true })
       .populate('clientId', '_id image name email phone location')
       .populate('baberId', '_id image name email location').sort({ timestamp: -1 }).lean();
-    getIO().emit("request", updatedRequest);
+    getIO().emit("deleteRequest", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
     console.error('Erro ao cancelar o pedido (chamada)', error);
