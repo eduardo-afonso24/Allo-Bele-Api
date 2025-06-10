@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      "alloBelleSecretKey01", // Idealmente usar variável de ambiente
+      "alloBelleSecretKey01",
       { expiresIn: "60d" }
     );
 

@@ -1,3 +1,4 @@
+// getAllRoom.ts
 import { Response, Request } from "express";
 import { Room } from "../../../../shared";
 
