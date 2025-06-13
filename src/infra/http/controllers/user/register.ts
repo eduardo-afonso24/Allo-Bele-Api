@@ -61,7 +61,7 @@ export const register = async (req: Request, res: Response) => {
 
       const user = new User({
         name,
-        email,
+        email: email?.trim(),
         phone,
         password: hashedPassword,
         verificationByEmailToken: code,
