@@ -1,66 +1,89 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from 'fs';
+import fs from "fs";
 import { Fields, Files, IncomingForm } from "formidable";
-import { Response, Request } from "express";
-import { ProfissionalService, Category } from "../../../../shared";
+import { Request, Response } from "express";
+import { ProfissionalService } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 
+// Garantir diretório de uploads
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadDir = path.join(__dirname, '../../../../uploads');
+const uploadDir = path.resolve(__dirname, "../../../../uploads");
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
+
+// Helper para extrair valor único de campo ou undefined
+const getFieldValue = <T = string>(field: T | T[] | undefined): T | undefined =>
+  Array.isArray(field) ? field[0] : field;
 
 export const updateService = async (req: Request, res: Response) => {
   const { serviceId } = req.params;
 
   const form = new IncomingForm({ uploadDir, keepExtensions: true });
 
-  form.parse(req, async (err: any, fields: Fields, files: Files) => {
+  form.parse(req, async (err, fields: Fields, files: Files) => {
     if (err) {
-      return res.status(500).json({ message: 'Erro ao fazer upload do arquivo.' });
+      console.error("Erro no upload:", err);
+      return res.status(500).json({ message: "Erro ao fazer upload do arquivo." });
     }
 
-    const file = Array.isArray(files.image) ? files.image[0] : files.image;
-
-    const name = Array.isArray(fields.name) ? fields.name[0] : fields.name;
-    const price = Array.isArray(fields.price) ? fields.price[0] : fields.price;
-    const description = Array.isArray(fields.description) ? fields.description[0] : fields.description;
-    const category = Array.isArray(fields.category) ? fields.category[0] : fields.category;
-
-
-
     try {
-      const findService = await ProfissionalService.findById(serviceId);
-      if (!findService) {
+      const existingService = await ProfissionalService.findById(serviceId);
+      if (!existingService) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      let imageURL = ""
 
-      if (file && file.filepath) {
+      // Extrair campos
+      const name = getFieldValue(fields.name);
+      const price = getFieldValue(fields.price);
+      const description = getFieldValue(fields.description);
+      const category = getFieldValue(fields.category);
+      const file = Array.isArray(files.image) ? files.image[0] : files.image;
+
+      // Atualizar imagem se houver novo arquivo
+      let imageURL = existingService.image;
+      if (file?.filepath) {
         imageURL = `/uploads/${path.basename(file.filepath)}`;
       }
 
-      const service = await ProfissionalService.findByIdAndUpdate(serviceId, {
-        serviceName: name ? name : findService.serviceName,
-        price: price ? price : findService.price,
-        category: category ? category : findService.category,
-        description: description ? description : findService.description,
-        image: imageURL ? imageURL : findService.image,
-      },
-        { new: true });
+      console.log({
+        serviceName: name ?? existingService.serviceName,
+        price: price ?? existingService.price,
+        description: description ?? existingService.description,
+        category: category ?? existingService.category,
+        image: imageURL,
+        file: file ? file.filepath : "Nenhum arquivo enviado",
+      })
+      // Atualizar serviço
+      const updatedService = await ProfissionalService.findByIdAndUpdate(
+        serviceId,
+        {
+          serviceName: name ?? existingService.serviceName,
+          price: price ?? existingService.price,
+          description: description ?? existingService.description,
+          category: category ?? existingService.category,
+          image: imageURL,
+        },
+        { new: true }
+      );
 
+      // Emitir atualização via socket
       const updatedServices = await ProfissionalService.find({})
-        .populate('category', '_id name')
+        .populate("category", "_id name")
         .sort({ timestamp: -1 })
         .lean();
       getIO().emit("services", updatedServices);
 
-      res.status(200).json({ message: "Serviço editado com sucesso", service });
+      return res.status(200).json({
+        message: "Serviço editado com sucesso",
+        service: updatedService,
+      });
     } catch (error) {
-      console.error("Erro ao atualizar os dados do servico:", error);
-      return res.status(500).json({ message: "Ocorreu um erro ao Atualizar os dados do servico." });
+      console.error("Erro ao atualizar o serviço:", error);
+      return res.status(500).json({
+        message: "Erro interno ao atualizar o serviço.",
+      });
     }
   });
 };
