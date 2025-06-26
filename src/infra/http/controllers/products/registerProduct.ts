@@ -55,7 +55,7 @@ export const registerProduct = async (req: Request, res: Response) => {
         return res.status(404).json({ message: "Categoria não encontrada" });
       }
 
-      const findBrand = await Brand.findById(category);
+      const findBrand = await Brand.findById(brand);
       if (!findBrand) {
         console.log({ brand: findBrand })
         return res.status(404).json({ message: "Marca não encontrada" });
