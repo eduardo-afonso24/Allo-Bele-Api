@@ -51,11 +51,13 @@ export const registerProduct = async (req: Request, res: Response) => {
       })
       const findCategory = await CategoryProduct.findById(category);
       if (!findCategory) {
+        console.log({ category: findCategory })
         return res.status(404).json({ message: "Categoria não encontrada" });
       }
 
       const findBrand = await Brand.findById(category);
       if (!findBrand) {
+        console.log({ brand: findBrand })
         return res.status(404).json({ message: "Marca não encontrada" });
       }
 
@@ -78,6 +80,7 @@ export const registerProduct = async (req: Request, res: Response) => {
 
       res.status(200).json({ message: "Produto adicionado com sucesso", produts: produt });
     } catch (error) {
+      console.log({ error: error })
       res.status(500).json({ message: "Erro ao adicionar o produto", error });
     }
   });
