@@ -8,3 +8,6 @@ export * from "./professionalServicesSchema";
 export * from "./confirmationRequetsSchema";
 export * from "./pushNotification";
 export * from "./categorySchema";
+export * from "./brandSchema";
+export * from "./categoryProductSchema";
+export * from "./productsSchema";
