@@ -1,17 +1,17 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const BarbersShopsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please Enter Name"],
   },
   image: {
     type: String,
-    required: [false]
+    required: false
   },
-  profession: {
+  type: {
     type: String,
-    required: [false]
+    required: true
   },
   email: {
     type: String,
@@ -23,10 +23,6 @@ const UserSchema = new mongoose.Schema({
     unique: [true, "Email Already Exists"],
     required: true,
   },
-  gender: {
-    type: String,
-    enum: ["Feminino", "Masculino"],
-  },
   password: {
     type: String,
     required: [true, "Please enter your password"],
@@ -34,7 +30,7 @@ const UserSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    required: [false],
+    required: false,
   },
   rating: {
     type: Number,
@@ -46,9 +42,10 @@ const UserSchema = new mongoose.Schema({
     required: false,
     default: '9:00-21:00'
   },
-  dateOfBirth: {
-    type: Date,
-    required: [false],
+  distance: {
+    type: String,
+    required: false,
+    default: '0.7 km'
   },
   status: {
     type: Boolean,
@@ -69,15 +66,15 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ["client", "barber", "company", "admin"],
-    default: "client",
+    default: "company",
   },
   location: {
     latitude: Number,
     longitude: Number,
   },
-  professionalServices: [{
+  services: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "ProfissionalService"
+    ref: "BarberShopsServicesSchema"
   }],
   bookmarks: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -89,15 +86,15 @@ const UserSchema = new mongoose.Schema({
   }],
   nif: {
     type: String,
-    required: [false],
+    required: false,
   },
   verificationByEmailToken: {
     type: String,
-    required: [false],
+    required: false,
   },
   verificationByEmailExpires: {
     type: Date,
-    required: [false],
+    required: false,
   },
   token: {
     type: String,
@@ -105,4 +102,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export const User = mongoose.model("User", UserSchema);
+export const BarbersShops = mongoose.model("BarbersShops", BarbersShopsSchema);
