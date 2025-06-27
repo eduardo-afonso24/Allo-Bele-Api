@@ -6,7 +6,15 @@ export const registerBarbersShops = async (req: Request, res: Response) => {
 
   try {
 
+    console.log({
+      name,
+      password,
+      phone,
+      nif,
+      type
+    })
     if (!name || !password || !phone || !type) {
+      console.log("Preencha todos os campos.");
       return res.status(400).json({ message: "Preencha todos os campos." });
     }
 
@@ -22,6 +30,7 @@ export const registerBarbersShops = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: "Barbearia ou salão adicionado com sucesso", brand });
   } catch (error) {
+    console.log({ error: error })
     res.status(500).json({ message: "Erro ao adicionar a barbearia ou salão", error });
   }
 };
