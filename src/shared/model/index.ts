@@ -11,3 +11,5 @@ export * from "./categorySchema";
 export * from "./brandSchema";
 export * from "./categoryProductSchema";
 export * from "./productsSchema";
+export * from "./barbersShopsSchema";
+export * from "./barberShopsServicesSchema";

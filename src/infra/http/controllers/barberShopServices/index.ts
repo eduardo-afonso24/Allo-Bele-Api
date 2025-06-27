@@ -3,4 +3,4 @@ export * from "./getAllServices";
 export * from "./deleteService";
 export * from "./updateService";
 export * from "./getServices";
-export * from "./getAllServicesByUsers";
+export * from "./getAllServicesByBarberShop";

@@ -32,21 +32,19 @@ export const register = async (req: Request, res: Response) => {
 
 
     const name = Array.isArray(fields.name) ? fields.name[0] : fields.name;
-    const email = Array.isArray(fields.email) ? fields.email[0] : fields.email;
     const phone = Array.isArray(fields.phone) ? fields.phone[0] : fields.phone;
     const password = Array.isArray(fields.password) ? fields.password[0] : fields.password;
-    // const address = Array.isArray(fields.address) ? fields.address[0] : fields.address;
     const gender = Array.isArray(fields.gender) ? fields.gender[0] : fields.gender;
     const profession = Array.isArray(fields.profession) ? fields.profession[0] : fields.profession;
 
-    if (!name || !email || !phone || !password) {
+    if (!name || !phone || !password) {
       return res.status(400).json({ message: "Todos os campos são obrigatórios." });
     }
 
     try {
-      const existingUser = await User.findOne({ email });
+      const existingUser = await User.findOne({ phone });
       if (existingUser) {
-        return res.status(400).json({ message: "E-mail já está em uso." });
+        return res.status(400).json({ message: "Telefone já está em uso." });
       }
 
       let hashedPassword = ''
@@ -61,7 +59,6 @@ export const register = async (req: Request, res: Response) => {
 
       const user = new User({
         name,
-        email: email?.trim(),
         phone,
         password: hashedPassword,
         verificationByEmailToken: code,
