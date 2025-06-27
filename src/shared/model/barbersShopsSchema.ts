@@ -20,7 +20,7 @@ const BarbersShopsSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    unique: [true, "Email Already Exists"],
+    unique: false,
     required: true,
   },
   password: {
