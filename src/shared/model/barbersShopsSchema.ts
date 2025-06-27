@@ -16,7 +16,7 @@ const BarbersShopsSchema = new mongoose.Schema({
   email: {
     type: String,
     required: false,
-    unique: true,
+    unique: false,
   },
   phone: {
     type: Number,
