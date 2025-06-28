@@ -1,10 +1,13 @@
 import { Response, Request } from "express";
 import { BarbersShops } from "../../../../shared";
+import bcrypt from "bcrypt";
+import { GenerateCode } from "../../../../helpers";
 
 export const registerBarbersShops = async (req: Request, res: Response) => {
   const { name, password, phone, nif, type } = req.body;
 
   try {
+
 
     console.log({
       name,
@@ -18,13 +21,29 @@ export const registerBarbersShops = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Preencha todos os campos." });
     }
 
+    let hashedPassword = ''
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+    const code = GenerateCode();
+
+    console.log({ hashedPassword , code, now })
+
+
     const brand = new BarbersShops({
       name,
-      password,
+      password: hashedPassword,
       phone,
       nif,
-      type
+      type,
+      verificationByEmailToken: code,
+      verificationByEmailExpires: now,
     })
+
+    console.log({ brand })
 
     await brand.save();
 

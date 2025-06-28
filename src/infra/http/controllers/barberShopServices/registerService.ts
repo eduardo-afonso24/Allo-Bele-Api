@@ -6,6 +6,7 @@ import { Response, Request } from "express";
 import { ProfissionalService, Category, BarberShopsServices } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadDir = path.join(__dirname, '../../../../uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -41,6 +42,7 @@ export const registerService = async (req: Request, res: Response) => {
     if (!name || !price) {
       return res.status(400).json({ message: "Os campos nomes e precos são obrigatórios." });
     }
+
 
     try {
       console.log({

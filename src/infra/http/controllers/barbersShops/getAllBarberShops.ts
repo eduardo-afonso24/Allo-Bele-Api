@@ -1,12 +1,12 @@
 import { Response, Request } from "express";
-import { BarberShopsServices, Brand } from "../../../../shared";
+import { BarberShopsServices, BarbersShops, Brand } from "../../../../shared";
 
 export const getAllBarberShops = async (
   _: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const brand = await BarberShopsServices.find()
+    const brand = await BarbersShops.find()
       .sort({ timestamp: -1 })
       .lean();
     return res.status(200).json(brand);
