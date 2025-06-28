@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: false,
-    unique: [true, "Email Already Exists"],
+    unique: false,
   },
   phone: {
     type: Number,
