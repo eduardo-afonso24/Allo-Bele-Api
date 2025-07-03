@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkCode, clearNotificationRequest, confirmRequest, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllRequest, getAllRequestByBarberId, getAllRequestById, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser } from "../controllers";
+import { checkCode, clearNotificationRequest, confirmRequest, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllConfirmedRequestItsComplete, getAllRequest, getAllRequestByBarberId, getAllRequestById, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser } from "../controllers";
 import { forgotPassword } from "../controllers/user/forgotPassword";
 import { resetPassword } from "../controllers/user/resetPassword";
 const router = Router();
@@ -25,6 +25,7 @@ router.get("/get-all-request-by-id/:id", getAllRequestById);
 router.get("/all-barber", getAllbarber);
 router.get("/all-clients", getAllClients);
 router.get("/all-request", getAllRequest);
+router.get("/all-complet-request/:userId", getAllConfirmedRequestItsComplete);
 router.get("/all-confirmed-request", getAllConfirmedRequest);
 router.get("/all-confirmed-request/:userId", getAllConfirmedRequestByUserId);
 router.get("/get-info/:id", getUserById);

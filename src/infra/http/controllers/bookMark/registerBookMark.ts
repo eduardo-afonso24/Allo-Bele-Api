@@ -3,7 +3,7 @@ import { User, BookMark, Category } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 
 export const registerBookMark = async (req: Request, res: Response) => {
-  const { appointmentDate, category } = req.body;
+  const { appointmentDate, category, barberId } = req.body;
 
   const { clientId } = req.params;
 
@@ -24,6 +24,7 @@ export const registerBookMark = async (req: Request, res: Response) => {
 
     const book = new BookMark({
       clientId,
+      barberId,
       category,
       appointmentDate
     })

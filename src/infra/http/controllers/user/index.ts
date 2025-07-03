@@ -21,3 +21,4 @@ export * from "./getAllConfirmedRequest";
 export * from "./getAllRequestByBarberId";
 export * from "./clearNotificationRequest";
 export * from "./getAllConfirmedRequestByUserId";
+export * from "./getAllConfirmedRequestItsComplete";
