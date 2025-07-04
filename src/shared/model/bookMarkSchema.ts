@@ -5,6 +5,7 @@ const BookMarkSchema = new mongoose.Schema({
     barberId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
     appointmentDate: { type: Date, required: true },
+    authorized: { type: Number, default: 0 },
     confirmed: { type: Number, default: 0 },
     timestamp: { type: Date, default: Date.now },
 });

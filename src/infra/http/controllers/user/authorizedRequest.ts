@@ -15,7 +15,7 @@ export const authorizedRequest = async (req: Request, res: Response) => {
     }
 
     const request = await ConfirmationRequets.findByIdAndUpdate(requestId, {
-      authorized: true,
+      authorized,
       new: true
     },
       { new: true })
