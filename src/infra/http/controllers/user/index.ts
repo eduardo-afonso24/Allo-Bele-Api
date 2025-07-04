@@ -25,3 +25,5 @@ export * from "./getAllConfirmedRequestItsComplete";
 export * from "./authorizedRequest";
 export * from "./resetTimetable";
 export * from "./updateUserAvatars";
+export * from "./getAllRequestProduct";
+export * from "./sendRequestProduct";

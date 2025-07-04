@@ -1,3 +1,4 @@
+// ConfirmationRequetsSchema.ts (model backend)
 import mongoose from "mongoose";
 
 const ConfirmationRequetsSchema = new mongoose.Schema({
@@ -25,6 +26,7 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
         price: Number,
         quantity: Number,
         serviceName: String,
+        name: String,
         timestamp: Date,
         userId: String,
     }],
