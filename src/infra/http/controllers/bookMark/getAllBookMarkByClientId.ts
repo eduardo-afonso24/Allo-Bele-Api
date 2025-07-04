@@ -12,6 +12,7 @@ export const getAllBookMarkByClientId = async (
     const book = await BookMark.find({ clientId })
       .populate('clientId', 'name image address')
       .populate('barberId', 'name profession image address')
+      .populate('category', 'name')
       .lean();
     getIO().emit("bookByClientId", book);
     return res.status(200).json(book);

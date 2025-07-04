@@ -40,7 +40,7 @@ const BarbersShopsSchema = new mongoose.Schema({
   hours: {
     type: String,
     required: false,
-    default: '9:00-21:00'
+    default: '8:00-18:00'
   },
   distance: {
     type: String,

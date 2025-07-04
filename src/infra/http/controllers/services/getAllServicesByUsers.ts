@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { BarbersShops, ProfissionalService } from "../../../../shared";
+import { BarbersShops, ProfissionalService, User } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 
 export const getAllServicesByUsers = async (
@@ -9,7 +9,7 @@ export const getAllServicesByUsers = async (
   try {
     const { id } = req.params;
 
-    const findBarberShops = await ProfissionalService.findById(id);
+    const findBarberShops = await User.findById(id);
 
     if (!findBarberShops) {
       return res.status(404).json({ message: "Categoria não encontrada" });

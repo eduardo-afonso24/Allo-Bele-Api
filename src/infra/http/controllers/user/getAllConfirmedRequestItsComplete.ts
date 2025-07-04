@@ -1,13 +1,13 @@
 import { Response, Request } from "express";
 import { ConfirmationRequets } from "../../../../shared";
 
-export const getAllConfirmedRequestByUserId = async (req: Request, res: Response) => {
+export const getAllConfirmedRequestItsComplete = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
     const requests = await ConfirmationRequets.find({
-      // confirmed: true,
-      authorized: true,
+      confirmed: true,
+      isItComplete: true,
       $or: [
         { clientId: userId },
         { baberId: userId }
@@ -20,7 +20,7 @@ export const getAllConfirmedRequestByUserId = async (req: Request, res: Response
 
     return res.status(200).json(requests);
   } catch (error) {
-    console.error('Erro ao listar os pedidos confirmados', error);
-    return res.status(500).json({ message: 'Erro ao listar os pedidos confirmados.' });
+    console.error('Erro ao listar os pedidos confirmados e completos', error); // Mensagem de erro atualizada
+    return res.status(500).json({ message: 'Erro ao listar os pedidos confirmados e completos.' }); // Mensagem de erro atualizada
   }
 };
