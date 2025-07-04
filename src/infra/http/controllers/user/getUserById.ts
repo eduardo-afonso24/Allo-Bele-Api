@@ -1,6 +1,6 @@
 
 import { Response, Request } from "express";
-import { User } from "../../../../shared";
+import { BarbersShops, User } from "../../../../shared";
 
 
 export const getUserById = async (
@@ -10,7 +10,15 @@ export const getUserById = async (
   try {
     const { id } = req.params;
     const user = await User.findById(id);
-    return res.status(200).json(user);
+    if (user) {
+      return res.status(200).json(user);
+    }
+
+    const barberShop = await BarbersShops.findById(id);
+    if (barberShop) {
+      return res.status(200).json(barberShop);
+    }
+
   } catch (error) {
     console.error("Erro ao imprimir informacoes do usuario:", error);
     return res

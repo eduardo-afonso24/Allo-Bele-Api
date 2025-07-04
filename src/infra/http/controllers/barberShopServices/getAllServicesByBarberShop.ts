@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { BarbersShops, ProfissionalService } from "../../../../shared";
+import { BarberShopsServices, BarbersShops, ProfissionalService } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 
 export const getAllServicesByBarberShop = async (
@@ -17,7 +17,7 @@ export const getAllServicesByBarberShop = async (
 
 
     // Buscar todos os serviços que correspondem à barber shops
-    const services = await BarbersShops.find({ barbersShopsId: id })
+    const services = await BarberShopsServices.find({ barbersShopsId: id })
       .populate('category', '_id name')
       .lean();
 
