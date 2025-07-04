@@ -51,11 +51,6 @@ export const updateBookMark = async (req: Request, res: Response) => {
       return res.status(200).json({ message: "Agendamento editado com sucesso", book });
     }
 
-    const findBarber = await User.findById(barberId);
-    if (!findBarber) {
-      return res.status(404).json({ message: "Professional não encontrado" });
-    }
-
     const book = await BookMark.findByIdAndUpdate(id, {
       confirmed,
       barberId
@@ -64,26 +59,20 @@ export const updateBookMark = async (req: Request, res: Response) => {
       .populate("clientId", "_id image email")
       .populate("barberId", "_id image email");
 
-    const updateBarber = await User.findByIdAndUpdate(barberId, {
-      occupied: confirmed === 1 ? true : false
-    },
-      { new: true });
 
-    if (updateBarber) {
-      const expoToken = await PushNotification.findOne({ userId: updateBarber._id });
-      const category = await Category.findById(book.category?._id);
+    const expoTokenBarber = await PushNotification.findOne({ userId: barberId });
+    const category = await Category.findById(book.category?._id);
 
-      if (expoToken) {
-        const text = `Serviço agendado : ${category?.name}`;
-        const urlScreens = "/screens/client/(tabs)/home";
-        const title = confirmed == 1 ? "Agendamento confirmado" : "Agendamento recusado";
-        await sendPushNotificationExpo(
-          expoToken.token,
-          title,
-          text,
-          urlScreens
-        );
-      }
+    if (expoTokenBarber) {
+      const text = `Serviço agendado : ${category?.name}`;
+      const urlScreens = "/screens/client/(tabs)/home";
+      const title = confirmed == 1 ? "Agendamento confirmado" : "Agendamento recusado";
+      await sendPushNotificationExpo(
+        expoTokenBarber.token,
+        title,
+        text,
+        urlScreens
+      );
     }
 
     const userId = book.clientId._id

@@ -42,7 +42,7 @@ const ConfirmationRequetsSchema = new mongoose.Schema({
     },
     authorized: {
         type: Boolean,
-        default: false,
+        default: true,
     },
     isDeleted: {
         type: Boolean,
