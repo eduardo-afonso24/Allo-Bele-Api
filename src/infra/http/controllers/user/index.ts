@@ -22,3 +22,6 @@ export * from "./getAllRequestByBarberId";
 export * from "./clearNotificationRequest";
 export * from "./getAllConfirmedRequestByUserId";
 export * from "./getAllConfirmedRequestItsComplete";
+export * from "./authorizedRequest";
+export * from "./resetTimetable";
+export * from "./updateUserAvatars";

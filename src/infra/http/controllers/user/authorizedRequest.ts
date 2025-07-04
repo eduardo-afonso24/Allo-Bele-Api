@@ -4,9 +4,9 @@ import { getIO } from "../socket/sockets";
 import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
 
 
-export const confirmRequest = async (req: Request, res: Response) => {
+export const authorizedRequest = async (req: Request, res: Response) => {
   const { requestId } = req.params;
-  const { confirmed } = req.body;
+  const { authorized } = req.body;
   try {
 
     const findRequest = await ConfirmationRequets.findById(requestId);
@@ -15,7 +15,7 @@ export const confirmRequest = async (req: Request, res: Response) => {
     }
 
     const request = await ConfirmationRequets.findByIdAndUpdate(requestId, {
-      confirmed,
+      authorized: true,
       new: true
     },
       { new: true })
@@ -25,24 +25,24 @@ export const confirmRequest = async (req: Request, res: Response) => {
       .populate('clientId', '_id image name email phone location')
       .populate('baberId', '_id image name email location').sort({ timestamp: -1 }).lean();
 
-    await User.findByIdAndUpdate(request?.baberId._id, {
-      occupied: confirmed
-    },
-      { new: true });
+    const updateBarber = await User.findById(request?.baberId._id)
+
+    if (updateBarber) {
+      const expoToken = await PushNotification.findOne({ userId: updateBarber._id });
+
+      if (expoToken) {
+        const text = `Serviços : ${request.selectedServices.map((i) => i.serviceName).slice(0, 1)}`;
+        const urlScreens = "/screens/client/(tabs)/home";
+        await sendPushNotificationExpo(
+          expoToken.token,
+          "Novo pedido recebido",
+          text,
+          urlScreens
+        );
+      }
+    }
 
     const userId = request.clientId._id
-    const expoToken = await PushNotification.findOne({ userId: userId });
-
-    if (expoToken) {
-      const text = confirmed && request?.authorized === true ? "Pedido confirmado" : !confirmed && request?.authorized === true && "Pedido recusado";
-      const urlScreens = "/screens/client/(tabs)/home";
-      await sendPushNotificationExpo(
-        expoToken.token,
-        "Atualização do pedido",
-        text,
-        urlScreens
-      );
-    }
 
 
     const requestByUserId = await ConfirmationRequets.find({
@@ -61,7 +61,7 @@ export const confirmRequest = async (req: Request, res: Response) => {
     getIO().emit("request", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao confirmar o pedido (chamada)', error);
-    return res.status(500).json({ message: 'Erro ao confirmar o pedido (chamada).' });
+    console.error('Erro ao autorizar o pedido (chamada)', error);
+    return res.status(500).json({ message: 'Erro ao autorizar o pedido (chamada).' });
   }
 };

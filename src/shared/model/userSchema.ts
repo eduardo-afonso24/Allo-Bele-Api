@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
   hours: {
     type: String,
     required: false,
-    default: '9:00-21:00'
+    default: '8:00-17:00'
   },
   dateOfBirth: {
     type: Date,

@@ -9,8 +9,8 @@ export const getAllBookMarkByBarberId = async (
   try {
     const { barberId } = req.params;
     const book = await BookMark.find({ barberId })
-      .populate('clientId', 'name image address')
-      .populate('barberId', 'name profession image address')
+      .populate('clientId', '_id name image address')
+      .populate('barberId', '_id name profession image address')
       .populate('category', 'name')
       .lean();
     getIO().emit("bookByBarberId", book);

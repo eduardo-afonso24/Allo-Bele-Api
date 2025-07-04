@@ -6,7 +6,8 @@ export const getAllConfirmedRequestByUserId = async (req: Request, res: Response
     const { userId } = req.params;
 
     const requests = await ConfirmationRequets.find({
-      confirmed: true,
+      // confirmed: true,
+      authorized: true,
       $or: [
         { clientId: userId },
         { baberId: userId }
