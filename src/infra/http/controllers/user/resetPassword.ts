@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import bcrypt from "bcrypt";
-import { User } from "../../../../shared";
+import { BarbersShops, User } from "../../../../shared";
 
 
 export const resetPassword = async (
@@ -13,19 +13,36 @@ export const resetPassword = async (
         console.log({ email })
 
         const findUser = await User.findOne({ email });
-        if (!findUser) {
-            return res.status(404).json({ message: "User nao existe." });
+        if (findUser) {
+            let hashedPassword = ''
+            if (password) {
+                hashedPassword = await bcrypt.hash(password, 10);
+            }
+
+            findUser.password = hashedPassword;
+            const user = await findUser.save();
+
+            return res.status(200).json({ user });
         }
 
-        let hashedPassword = ''
-        if (password) {
-            hashedPassword = await bcrypt.hash(password, 10);
+
+
+
+
+        const barbershop = await BarbersShops.findOne({ email });
+
+        if (barbershop) {
+            let hashedPassword = ''
+            if (password) {
+                hashedPassword = await bcrypt.hash(password, 10);
+            }
+
+            barbershop.password = hashedPassword;
+            const user = await barbershop.save();
+
+            return res.status(200).json({ user });
         }
 
-        findUser.password = hashedPassword;
-        const user = await findUser.save();
-
-        return res.status(200).json({ user });
     } catch (error) {
         console.error("Erro no forgot password :", error);
         return res.status(500).json({ message: "Ocorreu um erro no forgot password." });
