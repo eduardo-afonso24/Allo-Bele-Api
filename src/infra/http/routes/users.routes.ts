@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authorizedRequest, checkCode, clearNotificationRequest, confirmRequest, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllConfirmedRequestItsComplete, getAllRequest, getAllRequestByBarberId, getAllRequestById, getAllRequestProduct, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, resetTimetable, sendRequestProduct, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser, updateUserAvatars } from "../controllers";
 import { forgotPassword } from "../controllers/user/forgotPassword";
 import { resetPassword } from "../controllers/user/resetPassword";
+import { confirmRequestProduct } from "../controllers/user/confirmRequestProduct";
 const router = Router();
 
 router.post("/client-register", register);
@@ -11,6 +12,10 @@ router.post("/social-login", socialLogin);
 router.post("/register-token-push-notification/:userId", pushNotification);
 router.post("/send-request-to-admin", sendRequestToAdmin);
 router.post("/send-request-to-product", sendRequestProduct);
+router.put("/confirm-request-products/:requestId", confirmRequestProduct);
+router.get("/all-request-product", getAllRequestProduct);
+router.get("/get-info/:id", getUserById);
+
 router.put("/forgot-password", forgotPassword);
 router.put("/reset-password", resetPassword);
 router.put("/reset-time", resetTimetable);
@@ -29,11 +34,9 @@ router.get("/get-all-request-by-id/:id", getAllRequestById);
 router.get("/all-barber", getAllbarber);
 router.get("/all-clients", getAllClients);
 router.get("/all-request", getAllRequest);
-router.get("/all-request-product", getAllRequestProduct);
 router.get("/all-complet-request/:userId", getAllConfirmedRequestItsComplete);
 router.get("/all-confirmed-request", getAllConfirmedRequest);
 router.get("/all-confirmed-request/:userId", getAllConfirmedRequestByUserId);
-router.get("/get-info/:id", getUserById);
 router.delete("/delete-request/:requestId", deleteRequest);
 
 export default router;

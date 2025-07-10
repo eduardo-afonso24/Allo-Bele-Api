@@ -14,3 +14,4 @@ export * from "./productsSchema";
 export * from "./barbersShopsSchema";
 export * from "./barberShopsServicesSchema";
 export * from "./requestProductsSchema";
+export * from "./deliveryPriceSchema";

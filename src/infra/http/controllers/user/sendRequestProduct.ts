@@ -11,6 +11,9 @@ export const sendRequestProduct = async (req: Request, res: Response): Promise<R
 
     const productIds = products.map((p) => p._id);
     const foundProducts = await Products.find({ _id: { $in: productIds } });
+    console.log({ foundProducts: foundProducts })
+    console.log({ productIds: productIds })
+    console.log({ products: products })
 
     if (foundProducts.length !== products.length) {
       return res.status(404).json({ message: 'Um ou mais produtos não foram encontrados.' });
