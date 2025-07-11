@@ -6,7 +6,7 @@ import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPush
 
 export const confirmRequestProduct = async (req: Request, res: Response) => {
   const { requestId } = req.params;
-  const { confirmed, userId } = req.body;
+  const { confirmed } = req.body;
   try {
 
     const findRequest = await RequestProducts.findById(requestId);
@@ -23,32 +23,37 @@ export const confirmRequestProduct = async (req: Request, res: Response) => {
 
     const updatedRequest = await RequestProducts.find({}).sort({ timestamp: -1 }).populate('products.product', '_id image name price').lean();
 
-    const expoToken = await PushNotification.findOne({ userId: userId });
+    const user = await User.findOne({ phone: request.phone });
 
-    if (expoToken) {
-      const text = confirmed === 1 ? "A sua encomenda está a caminho!" : confirmed === 2 && "A Encomenda foi recusada!";
-      const urlScreens = "/screens/client/(tabs)/home";
-      await sendPushNotificationExpo(
-        expoToken.token,
-        "Atualização da encomenda",
-        text,
-        urlScreens
-      );
+    if (user) {
+      const expoToken = await PushNotification.findOne({ userId: user._id });
+
+      if (expoToken) {
+        const text = confirmed === 1 ? "A sua encomenda está a caminho!" : confirmed === 2 && "A Encomenda foi recusada!";
+        const urlScreens = "/screens/client/(tabs)/home";
+        await sendPushNotificationExpo(
+          expoToken.token,
+          "Atualização da encomenda",
+          text,
+          urlScreens
+        );
+      }
     }
 
 
-    const requestByUserId = await RequestProducts.find({
-      confirmed: true,
-      $or: [
-        { clientId: userId },
-        { baberId: userId }
-      ]
-    })
-      .populate('products.product', '_id image name price')
-      .sort({ timestamp: -1 })
-      .lean();
 
-    getIO().emit("requestProductsByUserId", requestByUserId);
+    // const requestByUserId = await RequestProducts.find({
+    //   confirmed: true,
+    //   $or: [
+    //     { clientId: userId },
+    //     { baberId: userId }
+    //   ]
+    // })
+    //   .populate('products.product', '_id image name price')
+    //   .sort({ timestamp: -1 })
+    //   .lean();
+
+    // getIO().emit("requestProductsByUserId", requestByUserId);
     getIO().emit("requestProducts", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
