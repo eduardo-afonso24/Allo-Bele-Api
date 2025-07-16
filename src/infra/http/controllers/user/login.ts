@@ -9,8 +9,12 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body;
     const identifier = email;
 
+    console.log({ email, password });
+
     if (!identifier || !password) {
-      return res.status(400).json({ message: "Email ou telefone e senha são obrigatórios." });
+      return res
+        .status(400)
+        .json({ message: "Email ou telefone e senha são obrigatórios." });
     }
 
     // Primeiro, tenta autenticar como User
@@ -21,6 +25,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       user = await User.findOne({ phone: identifier });
     }
 
+    console.log({ user: user });
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
@@ -48,7 +53,9 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
           });
         }
 
-        return res.status(403).json({ user, message: "Usuário inativo. Verificação necessária." });
+        return res
+          .status(403)
+          .json({ user, message: "Usuário inativo. Verificação necessária." });
       }
 
       if (user.isBlocked) {
@@ -65,49 +72,44 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     }
 
     // Se não encontrou User, tenta autenticar como BarbersShops
-    let barbershop;
-    if (identifier.includes("@")) {
-      barbershop = await BarbersShops.findOne({ email: identifier });
-    } else {
-      barbershop = await BarbersShops.findOne({ phone: identifier });
-    }
+    // let barbershop;
+    // if (identifier.includes("@")) {
+    //   barbershop = await BarbersShops.findOne({ email: identifier });
+    // } else {
+    //   barbershop = await BarbersShops.findOne({ phone: identifier });
+    // }
 
-    if (barbershop) {
-      const isPasswordValid = await bcrypt.compare(password, barbershop.password);
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: "Credenciais inválidas." });
-      }
+    // if (barbershop) {
+    //   const isPasswordValid = await bcrypt.compare(password, barbershop.password);
+    //   if (!isPasswordValid) {
+    //     return res.status(401).json({ message: "Credenciais inválidas." });
+    //   }
 
-      if (barbershop.status === false) {
-        return res.status(403).json({ message: "Barbearia inativa. Verificação necessária." });
-      }
+    //   if (barbershop.status === false) {
+    //     return res.status(403).json({ message: "Barbearia inativa. Verificação necessária." });
+    //   }
 
-      if (barbershop.isBlocked) {
-        return res.status(423).json({ message: "Barbearia bloqueada!" });
-      }
+    //   if (barbershop.isBlocked) {
+    //     return res.status(423).json({ message: "Barbearia bloqueada!" });
+    //   }
 
-      const token = jwt.sign(
-        { userId: barbershop._id, role: barbershop.role },
-        "alloBelleSecretKey01",
-        { expiresIn: "60d" }
-      );
+    //   const token = jwt.sign(
+    //     { userId: barbershop._id, role: barbershop.role },
+    //     "alloBelleSecretKey01",
+    //     { expiresIn: "60d" }
+    //   );
 
-      return res.status(200).json({ user: barbershop, token });
-    }
+    //   return res.status(200).json({ user: barbershop, token });
+    // }
 
     return res.status(401).json({ message: "Usuário não encontrado." });
-
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     return res.status(500).json({ message: "Ocorreu um erro ao fazer login." });
   }
 };
 
-async function notifyUserByEmail({
-  userName,
-  userEmail,
-  token,
-}) {
+async function notifyUserByEmail({ userName, userEmail, token }) {
   const title = "Confirmação de e-mail";
   const titleUperCase = title.toUpperCase();
   return new SendMail().execute({
