@@ -6,18 +6,21 @@ export const pushNotification = async (req: Request, res: Response) => {
   const { userId } = req.params;
   const { token } = req.body;
   try {
-
+    console.log({token, userId})
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "Usuario não encontrado" });
     }
 
     const expoToken = await PushNotification.findOne({ userId: userId });
+    console.log("PUSH NOTIFICATIONS :", expoToken)
     if (expoToken) {
       const request = await PushNotification.findByIdAndUpdate(expoToken._id, {
         token: token
       },
         { new: true });
+
+        console.log("DENTRO do if :", request)
 
       return res.status(200).json(request);
     }
@@ -28,6 +31,7 @@ export const pushNotification = async (req: Request, res: Response) => {
     });
 
     await request.save();
+     console.log("Fora do if :", request)
 
     return res.status(200).json(request);
 
