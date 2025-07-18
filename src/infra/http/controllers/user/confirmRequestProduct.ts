@@ -27,6 +27,7 @@ export const confirmRequestProduct = async (req: Request, res: Response) => {
 
     if (user) {
       const expoToken = await PushNotification.findOne({ userId: user._id });
+      console.log({confime: expoToken})
 
       if (expoToken) {
         const text = confirmed === 1 ? "A sua encomenda está a caminho!" : confirmed === 2 && "A Encomenda foi recusada!";
