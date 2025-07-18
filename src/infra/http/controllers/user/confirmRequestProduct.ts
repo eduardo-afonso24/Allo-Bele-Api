@@ -7,6 +7,7 @@ import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPush
 export const confirmRequestProduct = async (req: Request, res: Response) => {
   const { requestId } = req.params;
   const { confirmed } = req.body;
+  console.log("CHAMANDO CONFIRM REQUEST")
   try {
 
     const findRequest = await RequestProducts.findById(requestId);
