@@ -3,8 +3,9 @@ import { Products, RequestProducts } from "../../../../shared";
 
 export const sendRequestProduct = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { name, phone, address, price, payment, products } = req.body;
+    const { name, phone, address, price, payment, products, deviceId } = req.body;
 
+    console.log("CHAMANDO")
     if (!Array.isArray(products) || products.length === 0) {
       return res.status(400).json({ message: 'Lista de produtos inválida.' });
     }
@@ -25,6 +26,7 @@ export const sendRequestProduct = async (req: Request, res: Response): Promise<R
       address,
       price,
       payment,
+      deviceId,
       products: products.map(p => ({
         product: p._id,
         quantity: p.quantity,

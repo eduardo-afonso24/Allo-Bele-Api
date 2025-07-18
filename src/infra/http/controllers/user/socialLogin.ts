@@ -9,7 +9,7 @@ export const socialLogin = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { email, name, phone, gender, image } = req.body;
+    const { email, name, phone, gender, image, deviceId } = req.body;
 
 
     const findUser = await User.findOne({ email });
@@ -19,6 +19,8 @@ export const socialLogin = async (
         return res.status(423).json({ message: "Usuario bloqueado!" });
       }
 
+       findUser.deviceId = deviceId
+      await findUser.save()
       const role = findUser.role
       const token = jwt.sign({ userId: findUser._id, role }, "alloBelleSecretKey01", {
         expiresIn: "60d",
@@ -36,6 +38,7 @@ export const socialLogin = async (
       phone,
       gender,
       image,
+      deviceId: deviceId,
       password: password,
       role: "client"
     });

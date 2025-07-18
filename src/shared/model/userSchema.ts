@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [false]
   },
+  deviceId: {
+    type: String,
+    required: [false]
+  },
   profession: {
     type: String,
     required: [false]

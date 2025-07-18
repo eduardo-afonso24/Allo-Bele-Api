@@ -8,6 +8,7 @@ const RequestProductsSchema = new mongoose.Schema({
   payment: { type: String, required: false },
   confirmed: { type: Number, default: 0 },
   isUnread: { type: Boolean, default: false },
+  deviceId:  { type: String, required: false },
   products: [
     {
       product: { type: mongoose.Schema.Types.ObjectId, ref: 'Products', required: true },
