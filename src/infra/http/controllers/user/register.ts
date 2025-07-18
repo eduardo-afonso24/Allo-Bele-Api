@@ -36,6 +36,7 @@ export const register = async (req: Request, res: Response) => {
     const password = Array.isArray(fields.password) ? fields.password[0] : fields.password;
     const gender = Array.isArray(fields.gender) ? fields.gender[0] : fields.gender;
     const profession = Array.isArray(fields.profession) ? fields.profession[0] : fields.profession;
+    const deviceId = Array.isArray(fields.deviceId) ? fields.deviceId[0] : fields.deviceId;
 
     if (!name || !phone || !password) {
       return res.status(400).json({ message: "Todos os campos são obrigatórios." });
@@ -64,6 +65,7 @@ export const register = async (req: Request, res: Response) => {
         verificationByEmailToken: code,
         verificationByEmailExpires: now,
         gender,
+        deviceId: deviceId,
         image: avatarUrl,
         profession,
         role: profession.trim() !== '' ? "barber" : "client"

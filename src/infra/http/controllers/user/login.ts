@@ -6,7 +6,7 @@ import { GenerateCode, SendMail } from "../../../../helpers";
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { email, password } = req.body;
+    const { email, password, deviceId } = req.body;
     const identifier = email;
 
     console.log({ email, password });
@@ -25,7 +25,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       user = await User.findOne({ phone: identifier });
     }
 
-    console.log({ user: user });
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
@@ -62,6 +61,11 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
         return res.status(423).json({ message: "Usuário bloqueado!" });
       }
 
+      user.deviceId = deviceId
+      await user.save()
+
+      console.log(user)
+
       const token = jwt.sign(
         { userId: user._id, role: user.role },
         "alloBelleSecretKey01",
@@ -70,37 +74,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
       return res.status(200).json({ user, token });
     }
-
-    // Se não encontrou User, tenta autenticar como BarbersShops
-    // let barbershop;
-    // if (identifier.includes("@")) {
-    //   barbershop = await BarbersShops.findOne({ email: identifier });
-    // } else {
-    //   barbershop = await BarbersShops.findOne({ phone: identifier });
-    // }
-
-    // if (barbershop) {
-    //   const isPasswordValid = await bcrypt.compare(password, barbershop.password);
-    //   if (!isPasswordValid) {
-    //     return res.status(401).json({ message: "Credenciais inválidas." });
-    //   }
-
-    //   if (barbershop.status === false) {
-    //     return res.status(403).json({ message: "Barbearia inativa. Verificação necessária." });
-    //   }
-
-    //   if (barbershop.isBlocked) {
-    //     return res.status(423).json({ message: "Barbearia bloqueada!" });
-    //   }
-
-    //   const token = jwt.sign(
-    //     { userId: barbershop._id, role: barbershop.role },
-    //     "alloBelleSecretKey01",
-    //     { expiresIn: "60d" }
-    //   );
-
-    //   return res.status(200).json({ user: barbershop, token });
-    // }
 
     return res.status(401).json({ message: "Usuário não encontrado." });
   } catch (error) {
