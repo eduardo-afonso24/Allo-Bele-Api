@@ -1,3 +1,4 @@
+// UserSchema.ts
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
@@ -20,7 +21,6 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: false,
-    unique: false,
   },
   phone: {
     type: Number,
@@ -108,5 +108,6 @@ const UserSchema = new mongoose.Schema({
     default: false,
   },
 });
+
 
 export const User = mongoose.model("User", UserSchema);
