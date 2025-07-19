@@ -39,6 +39,8 @@ export const register = async (req: Request, res: Response) => {
     const deviceId = Array.isArray(fields.deviceId) ? fields.deviceId[0] : fields.deviceId;
 
     if (!name || !phone || !password) {
+      console.log("Campos obrigatorios")
+      console.log({name, phone, password})
       return res.status(400).json({ message: "Todos os campos são obrigatórios." });
     }
 
@@ -72,11 +74,11 @@ export const register = async (req: Request, res: Response) => {
       });
 
       await user.save();
-      await notifyUserByEmail({
-        token: user.verificationByEmailToken,
-        userName: user.name,
-        userEmail: user.email,
-      });
+      // await notifyUserByEmail({
+      //   token: user.verificationByEmailToken,
+      //   userName: user.name,
+      //   userEmail: user.email,
+      // });
 
       console.log({
         verificationByEmailToken: user.verificationByEmailToken,

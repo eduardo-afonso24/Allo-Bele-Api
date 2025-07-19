@@ -5,6 +5,7 @@ import { PushNotification, User } from "../../../../shared";
 export const pushNotification = async (req: Request, res: Response) => {
   const { userId } = req.params;
   const { token } = req.body;
+  console.log("pushNotification")
   try {
     console.log({token, userId})
     const user = await User.findById(userId);
