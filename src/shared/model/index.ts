@@ -15,3 +15,4 @@ export * from "./barbersShopsSchema";
 export * from "./barberShopsServicesSchema";
 export * from "./requestProductsSchema";
 export * from "./deliveryPriceSchema";
+export * from "./promotionsSchema";
