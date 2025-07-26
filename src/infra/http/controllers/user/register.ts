@@ -31,7 +31,7 @@ export const register = async (req: Request, res: Response) => {
     }
 
 
-    console.log({fields})
+    console.log({ fields })
 
     const name = Array.isArray(fields.name) ? fields.name[0] : fields.name;
     const phone = Array.isArray(fields.phone) ? fields.phone[0] : fields.phone;
@@ -42,7 +42,7 @@ export const register = async (req: Request, res: Response) => {
 
     if (!name || !phone || !password) {
       console.log("Campos obrigatorios")
-      console.log({name, phone, password})
+      console.log({ name, phone, password })
       return res.status(400).json({ message: "Todos os campos são obrigatórios." });
     }
 
