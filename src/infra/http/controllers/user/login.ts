@@ -1,38 +1,63 @@
+// login.ts (backend)
 import jwt from "jsonwebtoken";
 import { Response, Request } from "express";
 import bcrypt from "bcrypt";
-import { User, BarbersShops } from "../../../../shared";
+import { User } from "../../../../shared";
 import { GenerateCode, SendMail } from "../../../../helpers";
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { email, password, deviceId } = req.body;
+    const { email, password, deviceId, isBiometric, id } = req.body;
     const identifier = email;
 
-    console.log({ email, password });
+    console.log({ email, password, isBiometric, id });
 
-    if (!identifier || !password) {
+
+
+    if (!isBiometric && !identifier) {
       return res
         .status(400)
         .json({ message: "Email ou telefone e senha são obrigatórios." });
     }
 
-    // Primeiro, tenta autenticar como User
     let user;
-    if (identifier.includes("@")) {
+    if (isBiometric && id) {
+      user = await User.findById(id);
+    } else if (identifier.includes("@")) {
       user = await User.findOne({ email: identifier });
-    } else {
+    } else if (!identifier.includes("@")) {
       user = await User.findOne({ phone: identifier });
     }
 
+
     if (user) {
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: "Credenciais inválidas." });
-      }
 
       const validRoles = ["admin", "client", "barber", "company"];
       if (!validRoles.includes(user.role)) {
+        return res.status(401).json({ message: "Credenciais inválidas." });
+      }
+
+      if (isBiometric) {
+        // if (!user.isBiometricEnabled) {
+        //   return res.status(401).json({ message: "Biometria não ativada para este usuário." });
+        // }
+        user.deviceId = deviceId
+        await user.save()
+
+        console.log(user)
+
+        const token = jwt.sign(
+          { userId: user._id, role: user.role },
+          "alloBelleSecretKey01",
+          { expiresIn: "60d" }
+        );
+
+        return res.status(200).json({ user, token });
+      }
+
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
         return res.status(401).json({ message: "Credenciais inválidas." });
       }
 

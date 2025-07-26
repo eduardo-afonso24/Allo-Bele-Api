@@ -1,4 +1,3 @@
-// UserSchema.ts
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
@@ -57,6 +56,10 @@ const UserSchema = new mongoose.Schema({
   status: {
     type: Boolean,
     default: true,
+  },
+  isBiometricEnabled: {
+    type: Boolean,
+    default: false,
   },
   occupied: {
     type: Boolean,
