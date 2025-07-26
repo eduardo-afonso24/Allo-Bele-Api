@@ -12,6 +12,7 @@ import categoryProductRoutes from "./categoryProduct.routes";
 import barberShops from "./barberShops.routes";
 import barberShopsServices from "./barberShopsServices.routes";
 import deliveryPrice from "./deliveryPrice.routes";
+import promotionsRoutes from "./promotions.routes";
 
 const router = Router();
 
@@ -28,5 +29,6 @@ router.use(categoryProductRoutes);
 router.use(barberShops);
 router.use(barberShopsServices);
 router.use(deliveryPrice);
+router.use(promotionsRoutes);
 
 export default router;
