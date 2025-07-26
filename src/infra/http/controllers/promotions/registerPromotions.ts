@@ -31,6 +31,7 @@ export const registerPromotions = async (req: Request, res: Response) => {
     }
 
     const title = Array.isArray(fields.title) ? fields.title[0] : fields.title;
+    const brand = Array.isArray(fields.brand) ? fields.brand[0] : fields.brand;
     const description = Array.isArray(fields.description)
       ? fields.description[0]
       : fields.description;
@@ -39,10 +40,12 @@ export const registerPromotions = async (req: Request, res: Response) => {
         title,
         description,
         image: imageURL,
+        brand: brand
       });
       const promotions = new Promotions({
         title,
         description,
+        brand,
         image: imageURL,
       });
 

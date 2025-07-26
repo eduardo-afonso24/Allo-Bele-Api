@@ -38,6 +38,7 @@ export const updatePromotions = async (req: Request, res: Response) => {
 
       // Extrair campos
       const title = getFieldValue(fields.title);
+      const brand = getFieldValue(fields.brand);
       const description = getFieldValue(fields.description);
       const file = Array.isArray(files.image) ? files.image[0] : files.image;
 
@@ -51,6 +52,7 @@ export const updatePromotions = async (req: Request, res: Response) => {
         title: title ?? existingPromotions.title,
         description: description ?? existingPromotions.description,
         image: imageURL,
+        brand: brand ?? existingPromotions.brand,
         file: file ? file.filepath : "Nenhum arquivo enviado",
       });
       // Atualizar serviço
@@ -60,6 +62,7 @@ export const updatePromotions = async (req: Request, res: Response) => {
           title: title ?? existingPromotions.title,
           description: description ?? existingPromotions.description,
           image: imageURL,
+          brand: brand ?? existingPromotions.brand,
         },
         { new: true }
       );
