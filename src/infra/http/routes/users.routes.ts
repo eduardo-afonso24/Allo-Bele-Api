@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authorizedRequest, checkCode, clearNotificationRequest, confirmRequest, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllConfirmedRequestItsComplete, getAllRequest, getAllRequestByBarberId, getAllRequestById, getAllRequestProduct, getOrdersByDeviceId, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, resetTimetable, sendCustomNotification, sendRequestProduct, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser, updateUserAvatars } from "../controllers";
+import { authorizedRequest, checkCode, clearNotificationRequest, confirmRequest, deleteAccount, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllConfirmedRequestItsComplete, getAllRequest, getAllRequestByBarberId, getAllRequestById, getAllRequestProduct, getOrdersByDeviceId, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, resetTimetable, sendCustomNotification, sendRequestProduct, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser, updateUserAvatars } from "../controllers";
 import { forgotPassword } from "../controllers/user/forgotPassword";
 import { resetPassword } from "../controllers/user/resetPassword";
 import { confirmRequestProduct } from "../controllers/user/confirmRequestProduct";
@@ -17,11 +17,12 @@ router.get("/all-request-product", getAllRequestProduct);
 router.get("/get-info/:id", getUserById);
 router.get("/orders/device/:deviceId", getOrdersByDeviceId);
 router.post("/notifications/custom", sendCustomNotification);
+router.put("/update-profile", updateUser);
+router.delete("/delete-user/:id", deleteAccount);
 
 router.put("/forgot-password", forgotPassword);
 router.put("/reset-password", resetPassword);
 router.put("/reset-time", resetTimetable);
-router.put("/update-profile", updateUser);
 router.put("/update-user-avatars", updateUserAvatars);
 router.put("/lock-and-unlock-user/:id", lockAndUnlockUser);
 router.put("/confirm-request/:requestId", confirmRequest);
