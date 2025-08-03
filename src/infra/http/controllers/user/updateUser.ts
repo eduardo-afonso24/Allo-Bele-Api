@@ -27,7 +27,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const email = Array.isArray(fields.email) ? fields.email[0] : fields.email;
     const phone = Array.isArray(fields.phone) ? fields.phone[0] : fields.phone;
     const address = Array.isArray(fields.address) ? fields.address[0] : fields.address;
-    const gender = Array.isArray(fields.gender) ? fields.gender[0] : fields.gender;
+    // const gender = Array.isArray(fields.gender) ? fields.gender[0] : fields.gender;
     const profession = Array.isArray(fields.profession) ? fields.profession[0] : fields.profession;
 
 
@@ -45,7 +45,7 @@ export const updateUser = async (req: Request, res: Response) => {
           email: email ? email : existingUser.email,
           phone: phone ? phone : existingUser.phone,
           address: address ? address : existingUser.address,
-          gender: gender ? gender : existingUser.gender,
+          // gender: gender ? gender : existingUser.gender,
           image: avatarUrl ? avatarUrl : existingUser.image,
           profession: profession ? profession : existingUser.profession,
         })
@@ -55,7 +55,7 @@ export const updateUser = async (req: Request, res: Response) => {
           email: email ? email : existingUser.email,
           phone: phone ? phone : existingUser.phone,
           address: address ? address : existingUser.address,
-          gender: gender ? gender : existingUser.gender,
+          // gender: gender ? gender : existingUser.gender,
           image: avatarUrl ? avatarUrl : existingUser.image,
           profession: profession && profession !== "null" ? profession : existingUser.profession,
         },
