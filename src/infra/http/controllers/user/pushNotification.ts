@@ -4,10 +4,10 @@ import { PushNotification, User } from "../../../../shared";
 
 export const pushNotification = async (req: Request, res: Response) => {
   const { userId } = req.params;
-  const { token } = req.body;
+  const { token, isActive } = req.body;
   console.log("pushNotification")
   try {
-    console.log({token, userId})
+    console.log({ token, userId })
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "Usuario não encontrado" });
@@ -15,24 +15,22 @@ export const pushNotification = async (req: Request, res: Response) => {
 
     const expoToken = await PushNotification.findOne({ userId: userId });
     console.log("PUSH NOTIFICATIONS :", expoToken)
-    if (expoToken) {
-      const request = await PushNotification.findByIdAndUpdate(expoToken._id, {
-        token: token
-      },
-        { new: true });
+    if (expoToken && Number(isActive) === 0) {
+      const request = await PushNotification.findByIdAndDelete(expoToken._id);
 
-        console.log("DENTRO do if :", request)
+      console.log("Dentro do if das push notifications :", request)
 
       return res.status(200).json(request);
     }
 
     const request = new PushNotification({
       userId,
-      token
+      token,
+      isActive
     });
 
     await request.save();
-     console.log("Fora do if :", request)
+    console.log("Fora do if :", request)
 
     return res.status(200).json(request);
 
