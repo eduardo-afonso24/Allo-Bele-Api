@@ -23,6 +23,19 @@ export const pushNotification = async (req: Request, res: Response) => {
       return res.status(200).json(request);
     }
 
+    if (expoToken && Number(isActive) !== 0) {
+      const request = await PushNotification.findByIdAndUpdate(expoToken._id, {
+        token: token,
+        isActive: 1
+      }, {
+        new: true
+      });
+
+      console.log("Dentro do if das push notifications 2 :", request)
+
+      return res.status(200).json(request);
+    }
+
     const request = new PushNotification({
       userId,
       token,
