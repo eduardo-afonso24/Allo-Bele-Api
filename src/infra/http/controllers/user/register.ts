@@ -1,6 +1,6 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from 'fs';
+import fs from "fs";
 import { Fields, Files, IncomingForm } from "formidable";
 import { Response, Request } from "express";
 import bcrypt from "bcrypt";
@@ -9,7 +9,7 @@ import { User } from "../../../../shared";
 import { GenerateCode, SendMail } from "../../../../helpers";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const uploadDir = path.join(__dirname, '../../../../uploads');
+const uploadDir = path.join(__dirname, "../../../../uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
@@ -19,31 +19,38 @@ export const register = async (req: Request, res: Response) => {
 
   form.parse(req, async (err: any, fields: Fields, files: Files) => {
     if (err) {
-      return res.status(500).json({ message: 'Erro ao fazer upload do arquivo.' });
+      return res
+        .status(500)
+        .json({ message: "Erro ao fazer upload do arquivo." });
     }
 
     const file = Array.isArray(files.avatar) ? files.avatar[0] : files.avatar;
 
-    let avatarUrl = ""
+    let avatarUrl = "";
 
     if (file && file.filepath) {
       avatarUrl = `/uploads/${path.basename(file.filepath)}`;
     }
 
-
-    console.log({ fields })
-
     const name = Array.isArray(fields.name) ? fields.name[0] : fields.name;
     const phone = Array.isArray(fields.phone) ? fields.phone[0] : fields.phone;
-    const password = Array.isArray(fields.password) ? fields.password[0] : fields.password;
-    const gender = Array.isArray(fields.gender) ? fields.gender[0] : fields.gender;
-    const profession = Array.isArray(fields.profession) ? fields.profession[0] : fields.profession;
-    const deviceId = Array.isArray(fields.deviceId) ? fields.deviceId[0] : fields.deviceId;
+    const password = Array.isArray(fields.password)
+      ? fields.password[0]
+      : fields.password;
+    const gender = Array.isArray(fields.gender)
+      ? fields.gender[0]
+      : fields.gender;
+    const profession = Array.isArray(fields.profession)
+      ? fields.profession[0]
+      : fields.profession;
+    const deviceId = Array.isArray(fields.deviceId)
+      ? fields.deviceId[0]
+      : fields.deviceId;
 
     if (!name || !phone || !password) {
-      console.log("Campos obrigatorios")
-      console.log({ name, phone, password })
-      return res.status(400).json({ message: "Todos os campos são obrigatórios." });
+      return res
+        .status(400)
+        .json({ message: "Todos os campos são obrigatórios." });
     }
 
     try {
@@ -52,7 +59,7 @@ export const register = async (req: Request, res: Response) => {
         return res.status(400).json({ message: "Telefone já está em uso." });
       }
 
-      let hashedPassword = ''
+      let hashedPassword = "";
       if (password) {
         hashedPassword = await bcrypt.hash(password, 10);
       }
@@ -60,7 +67,6 @@ export const register = async (req: Request, res: Response) => {
       const now = new Date();
       now.setHours(now.getHours() + 1);
       const code = GenerateCode();
-
 
       const user = new User({
         name,
@@ -73,7 +79,7 @@ export const register = async (req: Request, res: Response) => {
         deviceId: deviceId,
         image: avatarUrl,
         profession,
-        role: profession.trim() !== '' ? "barber" : "client"
+        role: profession.trim() !== "" ? "barber" : "client",
       });
 
       await user.save();
@@ -83,20 +89,19 @@ export const register = async (req: Request, res: Response) => {
       //   userEmail: user.email,
       // });
 
-      console.log({
-        verificationByEmailToken: user.verificationByEmailToken,
-        userName: user.name,
-        userEmail: user.email,
-      })
-
-      const token = jwt.sign({ userId: user._id, role: user.role }, "alloBelleSecretKey01", {
-        expiresIn: "60d",
-      });
+      const token = jwt.sign(
+        { userId: user._id, role: user.role },
+        "alloBelleSecretKey01",
+        {
+          expiresIn: "60d",
+        }
+      );
 
       return res.status(201).json({ user, token });
     } catch (error) {
-      console.error("Erro ao registrar usuário:", error);
-      return res.status(500).json({ message: "Ocorreu um erro ao registrar o usuário." });
+      return res
+        .status(500)
+        .json({ message: "Ocorreu um erro ao registrar o usuário." });
     }
   });
 };
@@ -104,11 +109,11 @@ export const register = async (req: Request, res: Response) => {
 async function notifyUserByEmail({
   userName,
   userEmail,
-  token
+  token,
 }: {
   userName: string;
   userEmail: string;
-  token: string
+  token: string;
 }) {
   const title = "Confirmação de e-mail";
   const titleUperCase = title.toUpperCase();

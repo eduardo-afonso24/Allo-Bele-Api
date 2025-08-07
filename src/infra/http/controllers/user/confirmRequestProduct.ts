@@ -77,7 +77,6 @@ export const confirmRequestProduct = async (req: Request, res: Response) => {
   const { requestId } = req.params;
   const { confirmed } = req.body;
 
-  console.log("CHAMANDO CONFIRM REQUEST");
 
   try {
     const findRequest = await RequestProducts.findById(requestId);
@@ -120,7 +119,6 @@ export const confirmRequestProduct = async (req: Request, res: Response) => {
       );
     } else if (user) {
       const expoToken = await PushNotification.findOne({ userId: user._id });
-      console.log({ confime: expoToken });
 
       if (expoToken?.token && expoToken.token.trim().length > 0) {
         await sendPushNotificationExpo(
@@ -135,7 +133,6 @@ export const confirmRequestProduct = async (req: Request, res: Response) => {
     getIO().emit("requestProducts", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
-    console.error("Erro ao confirmar a encomenda", error);
     return res.status(500).json({ message: "Erro ao confirmar a encomenda." });
   }
 };

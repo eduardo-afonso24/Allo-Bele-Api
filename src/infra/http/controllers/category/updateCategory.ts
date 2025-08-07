@@ -44,11 +44,6 @@ export const updateCategory = async (req: Request, res: Response) => {
         imageURL = `/uploads/${path.basename(file.filepath)}`;
       }
 
-      console.log({
-        name: name ?? existingProduct.name,
-        image: imageURL,
-        file: file ? file.filepath : "Nenhum arquivo enviado",
-      })
       // Atualizar serviço
       const updatedService = await Category.findByIdAndUpdate(
         id,

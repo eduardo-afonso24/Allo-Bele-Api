@@ -10,9 +10,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     const { email, password, deviceId, isBiometric, id } = req.body;
     const identifier = email;
 
-    console.log({ email, password, isBiometric, id });
-
-
 
     if (!isBiometric && !identifier) {
       return res
@@ -43,8 +40,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
         // }
         user.deviceId = deviceId
         await user.save()
-
-        console.log(user)
 
         const token = jwt.sign(
           { userId: user._id, role: user.role },
@@ -89,7 +84,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       user.deviceId = deviceId
       await user.save()
 
-      console.log(user)
 
       const token = jwt.sign(
         { userId: user._id, role: user.role },
@@ -102,7 +96,6 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
     return res.status(401).json({ message: "Usuário não encontrado." });
   } catch (error) {
-    console.error("Erro ao fazer login:", error);
     return res.status(500).json({ message: "Ocorreu um erro ao fazer login." });
   }
 };

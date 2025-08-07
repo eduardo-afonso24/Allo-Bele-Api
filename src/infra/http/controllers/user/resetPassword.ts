@@ -10,8 +10,6 @@ export const resetPassword = async (
     try {
         const { email, password } = req.body;
 
-        console.log({ email })
-
         const findUser = await User.findOne({ email });
         if (findUser) {
             let hashedPassword = ''
@@ -44,7 +42,6 @@ export const resetPassword = async (
         }
 
     } catch (error) {
-        console.error("Erro no forgot password :", error);
         return res.status(500).json({ message: "Ocorreu um erro no forgot password." });
     }
 };

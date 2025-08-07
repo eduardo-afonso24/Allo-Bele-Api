@@ -28,7 +28,6 @@ export const createPubs = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Nenhum arquivo enviado ou arquivo inválido.' });
     }
     const imagensUrl = `/uploads/${path.basename(file.filepath)}`;
-    console.log('caminho da imgem ', imagensUrl)
     const message = Array.isArray(fields.message) ? fields.message[0] : fields.message;
     try {
       const newPub = new Pubs({
@@ -42,7 +41,6 @@ export const createPubs = async (req: Request, res: Response) => {
       getIO().emit("pubs", updatedPub);
       res.status(201).json({ message: 'Publicação criada com sucesso', pub });
     } catch (error) {
-      console.error('Erro ao criar publicação', error);
       res.status(500).json({ message: 'Erro ao criar publicação.' });
     }
   });

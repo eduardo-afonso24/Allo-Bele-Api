@@ -17,16 +17,12 @@ export const sendRequestProduct = async (
       expoToken,
     } = req.body;
 
-    console.log("CHAMANDO");
     if (!Array.isArray(products) || products.length === 0) {
       return res.status(400).json({ message: "Lista de produtos inválida." });
     }
 
     const productIds = products.map((p) => p._id);
     const foundProducts = await Products.find({ _id: { $in: productIds } });
-    console.log({ foundProducts: foundProducts });
-    console.log({ productIds: productIds });
-    console.log({ products: products });
 
     if (foundProducts.length !== products.length) {
       return res
@@ -54,7 +50,6 @@ export const sendRequestProduct = async (
       .status(200)
       .json({ message: "Pedido enviado com sucesso!", newRequest });
   } catch (error) {
-    console.error("Erro ao enviar pedido:", error);
     return res.status(500).json({ message: "Erro interno ao enviar pedido." });
   }
 };

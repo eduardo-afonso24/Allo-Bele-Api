@@ -37,10 +37,7 @@ export const registerCategory = async (req: Request, res: Response) => {
     }
 
     try {
-      console.log({
-        name,
-        image: imageURL,
-      })
+
 
       const produt = new Category({
         name,
@@ -55,7 +52,6 @@ export const registerCategory = async (req: Request, res: Response) => {
 
       res.status(200).json({ message: "Categoria adicionada com sucesso", produts: produt });
     } catch (error) {
-      console.log({ error: error })
       res.status(500).json({ message: "Erro ao adicionar a Categoria", error });
     }
   });
