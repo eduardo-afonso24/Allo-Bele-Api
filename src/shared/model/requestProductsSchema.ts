@@ -8,16 +8,24 @@ const RequestProductsSchema = new mongoose.Schema({
   payment: { type: String, required: false },
   confirmed: { type: Number, default: 0 },
   isUnread: { type: Boolean, default: false },
-  deviceId:  { type: String, required: false },
+  deviceId: { type: String, required: false },
+  expoToken: { type: String, required: false },
   products: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Products', required: true },
-      quantity: { type: Number, required: true }
-    }
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Products",
+        required: true,
+      },
+      quantity: { type: Number, required: true },
+    },
   ],
   timestamp: { type: Date, default: Date.now },
 });
 
 RequestProductsSchema.index({ timestamp: -1 });
 
-export const RequestProducts = mongoose.model('RequestProducts', RequestProductsSchema);
+export const RequestProducts = mongoose.model(
+  "RequestProducts",
+  RequestProductsSchema
+);
