@@ -8,7 +8,6 @@ export const getPromotions = async (
 ): Promise<Response> => {
   try {
     const promotions = await Promotions.find({}).sort({ timestamp: -1 }).lean();
-    getIO().emit("promotions", promotions);
     return res.status(200).json(promotions);
   } catch (error) {
     console.error("Erro ao imprimir lista de promoções:", error);
