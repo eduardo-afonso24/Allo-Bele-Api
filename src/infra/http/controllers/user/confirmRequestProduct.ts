@@ -3,35 +3,45 @@ import { PushNotification, RequestProducts, User } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 import { sendPushNotificationExpo } from "../../../../helpers/functions/sendPushNotificationExpo";
 
-
 export const confirmRequestProduct = async (req: Request, res: Response) => {
   const { requestId } = req.params;
   const { confirmed } = req.body;
-  console.log("CHAMANDO CONFIRM REQUEST")
+  console.log("CHAMANDO CONFIRM REQUEST");
   try {
-
     const findRequest = await RequestProducts.findById(requestId);
     if (!findRequest) {
       return res.status(404).json({ message: "Encomenda não encontrada" });
     }
 
-    const request = await RequestProducts.findByIdAndUpdate(requestId, {
-      confirmed,
-      isUnread: true
-    },
-      { new: true })
+    const request = await RequestProducts.findByIdAndUpdate(
+      requestId,
+      {
+        confirmed,
+        isUnread: true,
+      },
+      { new: true }
+    );
 
-
-    const updatedRequest = await RequestProducts.find({}).sort({ timestamp: -1 }).populate('products.product', '_id image name price').lean();
+    const updatedRequest = await RequestProducts.find({})
+      .sort({ timestamp: -1 })
+      .populate("products.product", "_id image name price")
+      .lean();
 
     const user = await User.findOne({ phone: request.phone });
 
     if (user) {
       const expoToken = await PushNotification.findOne({ userId: user._id });
-      console.log({confime: expoToken})
+      console.log({ confime: expoToken });
 
       if (expoToken) {
-        const text = confirmed === 1 ? "A sua encomenda está a caminho!" : confirmed === 2 && "A Encomenda foi recusada!";
+        const text =
+          confirmed === 1
+            ? "📦 A sua encomenda está a caminho! Prepare-se para recebê-la em breve. 🚚"
+            : confirmed === 3
+            ? "✅ A sua encomenda foi entregue com sucesso! Obrigado pela preferência. 💖"
+            : confirmed === 2
+            ? "❌ A sua encomenda foi recusada. Se tiver dúvidas, entre em contacto conosco."
+            : "";
         const urlScreens = "/screens/client/(tabs)/home";
         await sendPushNotificationExpo(
           expoToken.token,
@@ -41,8 +51,6 @@ export const confirmRequestProduct = async (req: Request, res: Response) => {
         );
       }
     }
-
-
 
     // const requestByUserId = await RequestProducts.find({
     //   confirmed: true,
@@ -59,7 +67,7 @@ export const confirmRequestProduct = async (req: Request, res: Response) => {
     getIO().emit("requestProducts", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao confirmar a encomenda', error);
-    return res.status(500).json({ message: 'Erro ao confirmar a encomenda.' });
+    console.error("Erro ao confirmar a encomenda", error);
+    return res.status(500).json({ message: "Erro ao confirmar a encomenda." });
   }
 };
