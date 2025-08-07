@@ -41,6 +41,23 @@ export const updateUser = async (req: Request, res: Response) => {
         }
 
         console.log({
+          existingUser: existingUser
+        })
+
+        console.log("DADOS DO FORMULARIO > ", {
+          name: name,
+          email: email,
+          phone: phone,
+          address: address,
+          image: avatarUrl,
+          profession: profession,
+        })
+
+        console.log("DADOS DO ENDERECO > ", {
+          address: address ? address : existingUser.address,
+        })
+
+        console.log("DADOS NORMAIS", {
           name: name ? name : existingUser.name,
           email: email ? email : existingUser.email,
           phone: phone ? phone : existingUser.phone,
