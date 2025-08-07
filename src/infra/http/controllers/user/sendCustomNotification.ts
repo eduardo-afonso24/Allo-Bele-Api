@@ -20,7 +20,6 @@ export const sendCustomNotification = async (req: Request, res: Response) => {
     } else if (userId) {
       // Enviar para um usuário específico
       const userToken = await PushNotification.findOne({ userId });
-      console.log({userToken})
       if (!userToken) {
         return res.status(404).json({ message: "Token de notificação não encontrado para este usuário." });
       }

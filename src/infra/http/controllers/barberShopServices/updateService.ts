@@ -46,15 +46,7 @@ export const updateService = async (req: Request, res: Response) => {
       if (file?.filepath) {
         imageURL = `/uploads/${path.basename(file.filepath)}`;
       }
-
-      console.log({
-        name: name ?? existingService.name,
-        price: price ?? existingService.price,
-        description: description ?? existingService.description,
-        category: category ?? existingService.category,
-        image: imageURL,
-        file: file ? file.filepath : "Nenhum arquivo enviado",
-      })
+      
       // Atualizar serviço
       const updatedService = await BarberShopsServices.findByIdAndUpdate(
         serviceId,

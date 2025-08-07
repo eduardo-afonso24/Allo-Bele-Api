@@ -40,12 +40,6 @@ export const registerPromotions = async (req: Request, res: Response) => {
       ? fields.description[0]
       : fields.description;
     try {
-      console.log({
-        title,
-        description,
-        image: imageURL,
-        brand: brand,
-      });
       const promotions = new Promotions({
         title,
         description,
@@ -64,7 +58,6 @@ export const registerPromotions = async (req: Request, res: Response) => {
         promotions: promotions,
       });
     } catch (error) {
-      console.log({ error: error });
       res
         .status(500)
         .json({ message: "Erro ao adicionar o promotions", error });

@@ -45,16 +45,6 @@ export const updateUser = async (req: Request, res: Response) => {
           avatarUrl = `/uploads/${path.basename(file.filepath)}`;
         }
 
-        console.log("DADOS NORMAIS", {
-          name: name ? name : existingUser.name,
-          email: email ? email : existingUser.email,
-          phone: phone ? phone : existingUser.phone,
-          address: address,
-          // gender: gender ? gender : existingUser.gender,
-          image: avatarUrl ? avatarUrl : existingUser.image,
-          profession: profession ? profession : existingUser.profession,
-        });
-
         const user = await User.findByIdAndUpdate(
           existingUser._id,
           {
@@ -120,7 +110,6 @@ export const updateUser = async (req: Request, res: Response) => {
         return res.status(200).json({ user, token });
       }
     } catch (error) {
-      console.error("Erro ao atualizar os dados do usuário:", error);
       return res
         .status(500)
         .json({ message: "Ocorreu um erro ao r os dados do usuário." });

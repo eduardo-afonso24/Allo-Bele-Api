@@ -3,21 +3,25 @@ import { Response, Request } from "express";
 import { BarbersShops, ConfirmationRequets, User } from "../../../../shared";
 import { getIO } from "../socket/sockets";
 
-export const sendRequestToAdmin = async (req: Request, res: Response): Promise<Response> => {
+export const sendRequestToAdmin = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
-    const { clientId, selectedServices, totalPrice, type_payment, baberId } = req.body;
+    const { clientId, selectedServices, totalPrice, type_payment, baberId } =
+      req.body;
 
     // Validar cliente
     const client = await User.findById(clientId);
     if (!client) {
-      console.log("CLIENT")
-      return res.status(404).json({ message: 'Cliente não encontrado.' });
+      return res.status(404).json({ message: "Cliente não encontrado." });
     }
 
     // Validar selectedServices
     if (!Array.isArray(selectedServices)) {
-      console.log("selectedServices deve ser um array.");
-      return res.status(400).json({ message: 'selectedServices deve ser um array.' });
+      return res
+        .status(400)
+        .json({ message: "selectedServices deve ser um array." });
     }
 
     // Tentar encontrar o barbeiro ou a barbearia
@@ -26,8 +30,9 @@ export const sendRequestToAdmin = async (req: Request, res: Response): Promise<R
     const entity = barber || barberShops;
 
     if (!entity) {
-      console.log("ENTITY")
-      return res.status(404).json({ message: 'Barbeiro ou barbearia não encontrados.' });
+      return res
+        .status(404)
+        .json({ message: "Barbeiro ou barbearia não encontrados." });
     }
 
     // Criar nova solicitação
@@ -45,17 +50,17 @@ export const sendRequestToAdmin = async (req: Request, res: Response): Promise<R
 
     // Buscar e emitir todas as requisições atualizadas
     const updatedRequest = await ConfirmationRequets.find({})
-      .populate('clientId', '_id image name email phone location')
-      .populate('baberId', '_id image name email location')
+      .populate("clientId", "_id image name email phone location")
+      .populate("baberId", "_id image name email location")
       .sort({ timestamp: -1 })
       .lean();
 
     getIO().emit("AllRequest", updatedRequest);
 
-    return res.status(200).json({ message: 'Os dados foram enviados com sucesso', NewRequest });
-
+    return res
+      .status(200)
+      .json({ message: "Os dados foram enviados com sucesso", NewRequest });
   } catch (error) {
-    console.error('Erro ao enviar request:', error);
-    return res.status(500).json({ message: 'Erro ao enviar request.' });
+    return res.status(500).json({ message: "Erro ao enviar request." });
   }
 };

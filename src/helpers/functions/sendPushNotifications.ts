@@ -19,10 +19,6 @@ export const sendPushNotification = async (
 ) => {
 
     try {
-        // console.log({ serviceAccount }); // Não é necessário aqui
-
-        // const fcmToken = token.replace("ExponentPushToken[", "").replace("]", "");
-        console.log({ token: token })
 
         const message = {
             token,
