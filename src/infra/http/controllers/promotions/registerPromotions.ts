@@ -27,7 +27,11 @@ export const registerPromotions = async (req: Request, res: Response) => {
     let imageURL = "";
 
     if (file && file.filepath) {
-      imageURL = `/uploads/${path.basename(file.filepath)}`;
+      const ext = path.extname(file.originalFilename || file.filepath);
+      const filename = `${Date.now()}_${Math.round(Math.random() * 1e5)}${ext}`;
+      const newPath = path.join(uploadDir, filename);
+      fs.renameSync(file.filepath, newPath);
+      imageURL = `/uploads/${filename}`;
     }
 
     const title = Array.isArray(fields.title) ? fields.title[0] : fields.title;
@@ -40,7 +44,7 @@ export const registerPromotions = async (req: Request, res: Response) => {
         title,
         description,
         image: imageURL,
-        brand: brand
+        brand: brand,
       });
       const promotions = new Promotions({
         title,
