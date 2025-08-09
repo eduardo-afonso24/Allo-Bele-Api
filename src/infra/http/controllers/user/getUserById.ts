@@ -20,7 +20,6 @@ export const getUserById = async (
     }
 
   } catch (error) {
-    console.error("Erro ao imprimir informacoes do usuario:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir informacoes do usuario." });

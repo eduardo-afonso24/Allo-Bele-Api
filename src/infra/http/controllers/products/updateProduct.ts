@@ -24,7 +24,6 @@ export const updateProduct = async (req: Request, res: Response) => {
 
   form.parse(req, async (err, fields: Fields, files: Files) => {
     if (err) {
-      console.error("Erro no upload:", err);
       return res.status(500).json({ message: "Erro ao fazer upload do arquivo." });
     }
 

@@ -16,7 +16,6 @@ export const getProducts = async (
     getIO().emit("products", products);
     return res.status(200).json(products);
   } catch (error) {
-    console.error("Erro ao imprimir lista de produtos:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de produtos." });

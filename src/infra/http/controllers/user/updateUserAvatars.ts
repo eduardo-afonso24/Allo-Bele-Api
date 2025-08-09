@@ -17,7 +17,6 @@ export const updateUserAvatars = async (req: Request, res: Response) => { // Ren
 
     form.parse(req, async (err: any, fields: Fields, files: Files) => {
         if (err) {
-            console.error("Erro ao fazer upload do arquivo:", err);
             return res.status(500).json({ message: 'Erro ao fazer upload do arquivo.' });
         }
 
@@ -87,7 +86,6 @@ export const updateUserAvatars = async (req: Request, res: Response) => { // Ren
             });
             return res.status(200).json({ user, token });
         } catch (error) {
-            console.error("Erro ao atualizar as imagens do usuário:", error);
             return res.status(500).json({ message: "Ocorreu um erro ao atualizar as imagens do usuário." });
         }
     });

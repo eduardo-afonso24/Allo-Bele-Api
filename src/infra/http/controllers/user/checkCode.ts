@@ -36,7 +36,6 @@ export const checkCode = async (
     // Retorna o usuário e o token de autenticação
     return res.status(200).json({ user, token });
   } catch (error) {
-    console.error("Erro no forgot password :", error);
     return res.status(500).json({ message: "Ocorreu um erro no forgot password." });
   }
 };

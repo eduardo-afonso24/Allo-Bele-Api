@@ -33,7 +33,6 @@ export const resetTimetable = async (
 
 
     } catch (error) {
-        console.error("Erro no edit hour :", error);
         return res.status(500).json({ message: "Ocorreu um erro no edit hour." });
     }
 };

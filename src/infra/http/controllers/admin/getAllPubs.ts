@@ -9,7 +9,6 @@ export const getAllPubs = async (_: Request, res: Response) => {
       .lean();
     res.status(201).json({ pubs });
   } catch (error) {
-    console.error('Erro ao criar publicação', error);
     res.status(500).json({ message: 'Erro ao criar publicação.' });
   }
 };

@@ -18,6 +18,7 @@ const ProductsSchema = new mongoose.Schema({
   discount: { type: Number, required: false },
   discountedPrice: { type: Number, required: false },
   promotion: { type: Boolean, default: false },
+  unavailable: { type: Boolean, default: false },
   timestamp: { type: Date, default: Date.now },
 });
 

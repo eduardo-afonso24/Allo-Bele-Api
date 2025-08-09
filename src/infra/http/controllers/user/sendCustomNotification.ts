@@ -35,7 +35,6 @@ export const sendCustomNotification = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Notificação(ões) enviada(s) com sucesso." });
   } catch (error) {
-    console.error("Erro ao enviar notificação personalizada:", error);
     return res.status(500).json({ message: "Erro ao enviar notificação." });
   }
 };

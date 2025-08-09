@@ -11,7 +11,6 @@ export const getAllbarber = async (
     const barberList = await User.find({ role: "barber" }).lean();
     return res.status(200).json(barberList);
   } catch (error) {
-    console.error("Erro ao imprimir lista de barbeiros:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de barbeiros." });

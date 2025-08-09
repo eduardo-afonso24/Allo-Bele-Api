@@ -31,7 +31,6 @@ export const forgotPassword = async (
 
     return res.status(200).json({ user });
   } catch (error) {
-    console.error("Erro no forgot password :", error);
     return res.status(500).json({ message: "Ocorreu um erro no forgot password." });
   }
 };

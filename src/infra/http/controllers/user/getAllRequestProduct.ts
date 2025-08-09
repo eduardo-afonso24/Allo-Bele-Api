@@ -15,7 +15,6 @@ export const getAllRequestProduct = async (_: Request, res: Response) => {
       requests,
     });
   } catch (error) {
-    console.error('Erro ao listar os pedidos:', error);
     return res.status(500).json({ message: 'Erro ao listar os pedidos.' });
   }
 };

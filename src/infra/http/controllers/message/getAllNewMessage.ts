@@ -14,7 +14,6 @@ export const getAllNewMessage = async (
 
     return res.status(200).json(newMessages);
   } catch (error) {
-    console.error("Erro ao imprimir lista de mensagens novas:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de mensagens novas." });

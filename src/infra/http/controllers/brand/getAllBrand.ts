@@ -11,7 +11,6 @@ export const getAllBrand = async (
       .lean();
     return res.status(200).json(brand);
   } catch (error) {
-    console.error("Erro ao imprimir lista de todos as marcas:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de todos as marcas." });
