@@ -5,3 +5,4 @@ export * from "./updateProduct";
 export * from "./getProducts";
 export * from "./updateProductDiscount";
 export * from "./updateProductUnavailable";
+export * from "./getProductsAll";
