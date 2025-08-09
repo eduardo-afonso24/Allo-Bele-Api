@@ -15,5 +15,6 @@ router.get("/products", getProducts);
 router.delete("/products/:id", deleteProducts);
 router.put("/products/:id", updateProduct);
 router.put("/product-update-discount/:id", updateProductDiscount);
+router.put("/product-unavailable/:id", updateProductDiscount);
 
 export default router;
