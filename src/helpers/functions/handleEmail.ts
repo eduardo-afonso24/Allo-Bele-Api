@@ -27,7 +27,6 @@ export class SendMail {
                 html,
                 text,
             });
-            console.log({ message: "email enviado com sucesso" });
             return true;
         } catch (error: any) {
             return console.log({ error_send_email: error });

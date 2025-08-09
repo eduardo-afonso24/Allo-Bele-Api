@@ -37,13 +37,11 @@ export const isItCompleteRequest = async (req: Request, res: Response) => {
 
     const findBarber = await User.findById(barberId);
     if (findBarber && isItComplete) {
-      console.log({ isItComplete: isItComplete })
       const barber = await User.findByIdAndUpdate(barberId, {
         occupied: false
       },
         { new: true });
 
-      console.log({ barber: barber })
     }
 
     const updatedRequest = await ConfirmationRequets.find({})
@@ -53,7 +51,6 @@ export const isItCompleteRequest = async (req: Request, res: Response) => {
     getIO().emit("confirmRequests", request);
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao confirmar o pedido (chamada) como concluido', error);
     return res.status(500).json({ message: 'Erro ao confirmar o pedido (chamada) como concluido.' });
   }
 };

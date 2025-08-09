@@ -26,7 +26,6 @@ export const iamHereRequest = async (req: Request, res: Response) => {
     const expoToken = await PushNotification.findOne({ userId: userId });
 
     if (expoToken) {
-      console.log({ iamHere: iamHere })
       const text = iamHere ? `O professional ${barberName} já chegou!` : `O professional ${barberName} está a caminho!`;
       const urlScreens = "/screens/client/(tabs)/home";
       await sendPushNotificationExpo(
@@ -38,7 +37,6 @@ export const iamHereRequest = async (req: Request, res: Response) => {
     }
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao confirmar a chegada o pedido (chamada)', error);
     return res.status(500).json({ message: 'Erro ao confirmar a chegada o pedido (chamada).' });
   }
 };

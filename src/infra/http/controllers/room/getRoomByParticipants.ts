@@ -27,11 +27,8 @@ export const getRoomByParticipants = async (
       (room as any).lastMessage = lastMessage;
     }
 
-    console.log({ rooms });
-
     return res.status(200).json(rooms);  // Retorna as salas com a última mensagem
   } catch (error) {
-    console.error("Erro ao buscar salas por id do participante:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao buscar salas por id do participante." });

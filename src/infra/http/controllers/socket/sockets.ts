@@ -33,7 +33,6 @@ export const initSocket = (server: any) => {
 
         if (!socket.rooms.has(room._id.toString())) {
           socket.join(room._id.toString());
-          console.log(`Usuário ${socket.id} entrou na sala ${room._id} (durante sendMessage)`);
         }
 
         const newMessage = new Message({
@@ -54,10 +53,8 @@ export const initSocket = (server: any) => {
 
         // Emite a mensagem populada para todos os sockets na sala
         io.to(room._id.toString()).emit("receiveMessage", populatedMessage);
-        console.log(`Mensagem enviada para a sala ${room._id}: ${populatedMessage.message}`);
 
         const pushToken = await PushNotification.findOne({ userId: receiverId });
-        console.log({ pushToken: pushToken })
         if (pushToken) {
           const preview = message.length > 30 ? message.slice(0, 27) + "..." : message;
           await sendPushNotificationExpo(
@@ -66,11 +63,9 @@ export const initSocket = (server: any) => {
             preview,
             "/screens/client/(tabs)/home"
           );
-          console.log(`Notificação push enviada para o receiverId: ${receiverId}`);
         }
 
       } catch (error) {
-        console.error("Erro ao enviar mensagem via socket:", error);
         socket.emit("messageError", "Erro ao enviar mensagem");
       }
     });
@@ -79,12 +74,10 @@ export const initSocket = (server: any) => {
       try {
         const room = await createOrGetRoomService(senderId, receiverId);
         socket.join(room._id.toString());
-        console.log(`Usuário ${socket.id} entrou/criou a sala ${room._id}`);
 
         // Retorna dados da sala para o cliente via callback
         callback({ success: true, roomId: room._id.toString() });
       } catch (error) {
-        console.error("Erro ao criar ou entrar na sala:", error);
         callback({ success: false, error: "Erro ao criar ou entrar na sala" });
       }
     });
@@ -98,7 +91,6 @@ export const initSocket = (server: any) => {
           .lean();
         callback({ success: true, messages });
       } catch (error) {
-        console.error("Erro ao carregar mensagens da sala:", error);
         callback({ success: false, error: "Erro ao carregar mensagens da sala" });
       }
     });
@@ -129,7 +121,6 @@ export const initSocket = (server: any) => {
           };
         }));
 
-        console.log({ success: true, formattedRooms: formattedRooms, rooms: rooms, userObjectId: userObjectId })
         callback({ success: true, rooms: formattedRooms });
       } catch (error) {
         console.error("Erro ao buscar salas do usuário (via modelo Room):", error);

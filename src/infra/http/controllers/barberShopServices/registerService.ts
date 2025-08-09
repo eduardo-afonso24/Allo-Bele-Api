@@ -45,14 +45,6 @@ export const registerService = async (req: Request, res: Response) => {
 
 
     try {
-      console.log({
-        name,
-        description,
-        price,
-        barbersShopsId,
-        category,
-        image: imageURL,
-      })
       const findCategory = await Category.findById(category);
       if (!findCategory) {
         return res.status(404).json({ message: "Categoria não encontrada" });

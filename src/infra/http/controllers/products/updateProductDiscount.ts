@@ -33,13 +33,10 @@ export const updateProductDiscount = async (req: Request, res: Response) => {
       { new: true }
     ).lean();
 
-    console.log({ product: product })
-
     return res
       .status(200)
       .json({ message: "Desconto atualizado com sucesso.", product });
   } catch (error) {
-    console.error("Erro ao aplicar desconto:", error);
     res.status(500).json({ message: "Erro interno ao aplicar desconto.", error });
   }
 };

@@ -47,16 +47,6 @@ export const updateProduct = async (req: Request, res: Response) => {
       if (file?.filepath) {
         imageURL = `/uploads/${path.basename(file.filepath)}`;
       }
-
-      console.log({
-        name: name ?? existingProduct.name,
-        price: price ?? existingProduct.price,
-        description: description ?? existingProduct.description,
-        category: category ?? existingProduct.category,
-        brand: brand ?? existingProduct.brand,
-        image: imageURL,
-        file: file ? file.filepath : "Nenhum arquivo enviado",
-      })
       // Atualizar serviço
       const updatedService = await Products.findByIdAndUpdate(
         id,
@@ -84,7 +74,6 @@ export const updateProduct = async (req: Request, res: Response) => {
         service: updatedService,
       });
     } catch (error) {
-      console.error("Erro ao atualizar o produto:", error);
       return res.status(500).json({
         message: "Erro interno ao atualizar o produto.",
       });

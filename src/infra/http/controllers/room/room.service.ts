@@ -30,7 +30,6 @@ export const createOrGetRoomService = async (userId: string, receiverId: string)
       participants: [userObjectId, receiverObjectId],
     });
     await room.save();
-    console.log("Nova sala criada");
   }
 
   return room;

@@ -27,7 +27,11 @@ export const registerPromotions = async (req: Request, res: Response) => {
     let imageURL = "";
 
     if (file && file.filepath) {
-      imageURL = `/uploads/${path.basename(file.filepath)}`;
+      const ext = path.extname(file.originalFilename || file.filepath);
+      const filename = `${Date.now()}_${Math.round(Math.random() * 1e5)}${ext}`;
+      const newPath = path.join(uploadDir, filename);
+      fs.renameSync(file.filepath, newPath);
+      imageURL = `/uploads/${filename}`;
     }
 
     const title = Array.isArray(fields.title) ? fields.title[0] : fields.title;
@@ -36,12 +40,6 @@ export const registerPromotions = async (req: Request, res: Response) => {
       ? fields.description[0]
       : fields.description;
     try {
-      console.log({
-        title,
-        description,
-        image: imageURL,
-        brand: brand
-      });
       const promotions = new Promotions({
         title,
         description,
@@ -60,7 +58,6 @@ export const registerPromotions = async (req: Request, res: Response) => {
         promotions: promotions,
       });
     } catch (error) {
-      console.log({ error: error });
       res
         .status(500)
         .json({ message: "Erro ao adicionar o promotions", error });
