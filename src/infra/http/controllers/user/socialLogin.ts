@@ -19,7 +19,7 @@ export const socialLogin = async (
         return res.status(423).json({ message: "Usuario bloqueado!" });
       }
 
-       findUser.deviceId = deviceId
+      findUser.deviceId = deviceId
       await findUser.save()
       const role = findUser.role
       const token = jwt.sign({ userId: findUser._id, role }, "alloBelleSecretKey01", {
@@ -53,7 +53,6 @@ export const socialLogin = async (
 
 
   } catch (error) {
-    console.error("Erro ao fazer o login social:", error);
     return res.status(500).json({ message: "Ocorreu um erro ao fazer o login social." });
   }
 };

@@ -12,7 +12,6 @@ export const getAllCategory = async (
 
     return res.status(200).json(category);
   } catch (error) {
-    console.error("Erro ao imprimir lista de todas as categorias:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de todos os agendamentos." });

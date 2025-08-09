@@ -26,7 +26,6 @@ export const getAllServicesByBarberShop = async (
     // Retorna os serviços filtrados
     return res.status(200).json(services);
   } catch (error) {
-    console.error("Erro ao imprimir lista de servicos:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de servicos." });

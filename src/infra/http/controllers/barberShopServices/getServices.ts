@@ -16,7 +16,6 @@ export const getServices = async (
     getIO().emit("barberShopsServices", services);
     return res.status(200).json(services);
   } catch (error) {
-    console.error("Erro ao imprimir lista de servicos:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de servicos." });

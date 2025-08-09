@@ -18,13 +18,11 @@ export const createPubs = async (req: Request, res: Response) => {
 
   form.parse(req, async (err: any, fields: Fields, files: Files) => {
     if (err) {
-      console.error('Erro ao fazer upload do arquivo', err);
       return res.status(500).json({ message: 'Erro ao fazer upload do arquivo.' });
     }
 
     const file = Array.isArray(files.image) ? files.image[0] : files.image;
     if (!file || !file.filepath) {
-      console.error('Nenhum arquivo enviado ou arquivo inválido');
       return res.status(400).json({ message: 'Nenhum arquivo enviado ou arquivo inválido.' });
     }
     const imagensUrl = `/uploads/${path.basename(file.filepath)}`;

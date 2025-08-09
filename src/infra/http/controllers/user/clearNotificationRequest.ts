@@ -24,7 +24,6 @@ export const clearNotificationRequest = async (req: Request, res: Response) => {
     getIO().emit("request", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao marcar o pedido (chamada) como antigo', error);
     return res.status(500).json({ message: 'Erro ao marcar o pedido (chamada) como antigo.' });
   }
 };

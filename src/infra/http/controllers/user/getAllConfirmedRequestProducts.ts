@@ -9,7 +9,6 @@ export const getAllConfirmedRequestProducts = async (_: Request, res: Response) 
       .sort({ timestamp: -1 }).lean();
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao listar as encomendas confirmadas', error);
     return res.status(500).json({ message: 'Erro ao listar os pedidos (chamadas) confirmados.' });
   }
 };

@@ -28,7 +28,6 @@ export const updateLocationUser = async (
     getIO().emit("updateLocation", updatedUser);
     return res.status(200).json(updatedUser);
   } catch (error) {
-    console.error("Erro ao enviar a localizacao do usuario:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao enviar a localizacao do usuario." });

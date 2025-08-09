@@ -61,7 +61,6 @@ export const confirmRequest = async (req: Request, res: Response) => {
     getIO().emit("request", updatedRequest);
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao confirmar o pedido (chamada)', error);
     return res.status(500).json({ message: 'Erro ao confirmar o pedido (chamada).' });
   }
 };

@@ -10,7 +10,6 @@ export const getAllRoom = async (
     const room = await Room.find().populate("participants").lean();
     return res.status(200).json(room);
   } catch (error) {
-    console.error("Erro ao imprimir lista de salas:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de salas." });

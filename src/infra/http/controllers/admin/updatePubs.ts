@@ -49,7 +49,6 @@ export const updatePubs = async (req: Request, res: Response) => {
       getIO().emit("pubs", updatedPub);
       return res.status(200).json({ pubs });
     } catch (error) {
-      console.error("Erro ao atualizar os dados do post:", error);
       return res.status(500).json({ message: "Ocorreu um erro ao r os dados do post." });
     }
   });

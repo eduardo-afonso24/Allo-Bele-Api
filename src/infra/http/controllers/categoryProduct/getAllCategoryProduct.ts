@@ -11,7 +11,6 @@ export const getAllCategoryProduct = async (
       .lean();
     return res.status(200).json(category);
   } catch (error) {
-    console.error("Erro ao imprimir lista de todos as categorias de produtos:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de todos as categorias de produtos." });

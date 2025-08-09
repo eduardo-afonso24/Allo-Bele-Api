@@ -20,7 +20,6 @@ export const getAllConfirmedRequestItsComplete = async (req: Request, res: Respo
 
     return res.status(200).json(requests);
   } catch (error) {
-    console.error('Erro ao listar os pedidos confirmados e completos', error); // Mensagem de erro atualizada
     return res.status(500).json({ message: 'Erro ao listar os pedidos confirmados e completos.' }); // Mensagem de erro atualizada
   }
 };

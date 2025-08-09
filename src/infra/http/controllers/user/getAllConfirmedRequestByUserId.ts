@@ -20,7 +20,6 @@ export const getAllConfirmedRequestByUserId = async (req: Request, res: Response
 
     return res.status(200).json(requests);
   } catch (error) {
-    console.error('Erro ao listar os pedidos confirmados', error);
     return res.status(500).json({ message: 'Erro ao listar os pedidos confirmados.' });
   }
 };

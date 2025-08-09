@@ -18,7 +18,6 @@ export const lockAndUnlockUser = async (req: Request, res: Response) => {
       { new: true });
     return res.status(200).json(request);
   } catch (error) {
-    console.error('Erro ao bloquear ou desbloquear o usuario', error);
     return res.status(500).json({ message: 'Erro ao bloquear ou desbloquear o usuario.' });
   }
 };

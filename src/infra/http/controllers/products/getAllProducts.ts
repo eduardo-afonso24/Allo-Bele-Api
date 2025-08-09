@@ -19,7 +19,7 @@ export const getAllProducts = async (
     // Buscar todos os produtos que correspondem à categoria
     const products = await Products.find({ category: category })
       .populate('category', '_id name')
-       .populate('brand', '_id name')
+      .populate('brand', '_id name')
       .lean();
 
     getIO().emit("productByCategory", products);
@@ -27,7 +27,6 @@ export const getAllProducts = async (
     // Retorna os produtos filtrados
     return res.status(200).json(products);
   } catch (error) {
-    console.error("Erro ao imprimir lista de produtos:", error);
     return res
       .status(500)
       .json({ message: "Ocorreu um erro ao imprimir lista de produtos." });
