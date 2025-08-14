@@ -30,3 +30,4 @@ export * from "./sendRequestProduct";
 export * from "./getOrdersByDeviceId";
 export * from "./sendCustomNotification";
 export * from "./deleteAccount";
+export * from "./updateAddress";

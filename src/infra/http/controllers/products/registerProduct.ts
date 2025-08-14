@@ -61,7 +61,7 @@ export const registerProduct = async (req: Request, res: Response) => {
       })
 
       await produt.save();
-      const updateProduct = await Products.find({})
+      const updateProduct = await Products.find({ unavailable: false, isWholesale: false })
         .populate('category', '_id name')
         .populate('brand', '_id name')
         .sort({ timestamp: -1 })

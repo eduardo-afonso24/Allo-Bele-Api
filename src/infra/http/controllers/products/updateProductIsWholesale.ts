@@ -63,12 +63,12 @@ export const updateProductIsWholesale = async (req: Request, res: Response) => {
       );
 
       // Emitir atualização via socket
-      const updateProduct = await Products.find({})
+      const updateProduct = await Products.find({ isWholesale: true })
         .populate("category", "_id name")
         .populate("brand", "_id name")
         .sort({ timestamp: -1 })
         .lean();
-      getIO().emit("products", updateProduct);
+      getIO().emit("products-is-wholesale", updateProduct);
 
       return res.status(200).json({
         message: "Produto editado com sucesso",

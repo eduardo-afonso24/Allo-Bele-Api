@@ -64,12 +64,12 @@ export const registerProductIsWholesale = async (req: Request, res: Response) =>
       })
 
       await produt.save();
-      const updateProduct = await Products.find({})
+      const updateProduct = await Products.find({ isWholesale: true })
         .populate('category', '_id name')
         .populate('brand', '_id name')
         .sort({ timestamp: -1 })
         .lean();
-      getIO().emit("products", updateProduct);
+      getIO().emit("products-is-wholesale", updateProduct);
 
       res.status(200).json({ message: "Produto adicionado com sucesso", produts: produt });
     } catch (error) {

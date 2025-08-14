@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authorizedRequest, checkCode, clearNotificationRequest, confirmRequest, deleteAccount, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllConfirmedRequestItsComplete, getAllRequest, getAllRequestByBarberId, getAllRequestById, getAllRequestProduct, getOrdersByDeviceId, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, resetTimetable, sendCustomNotification, sendRequestProduct, sendRequestToAdmin, socialLogin, updateLocationUser, updateUser, updateUserAvatars } from "../controllers";
+import { authorizedRequest, checkCode, clearNotificationRequest, confirmRequest, deleteAccount, deleteRequest, getAllbarber, getAllClients, getAllConfirmedRequest, getAllConfirmedRequestByUserId, getAllConfirmedRequestItsComplete, getAllRequest, getAllRequestByBarberId, getAllRequestById, getAllRequestProduct, getOrdersByDeviceId, getUserById, iamHereRequest, inTrafficRequest, isItCompleteRequest, lockAndUnlockUser, login, pushNotification, register, resetTimetable, sendCustomNotification, sendRequestProduct, sendRequestToAdmin, socialLogin, updateAddress, updateLocationUser, updateUser, updateUserAvatars } from "../controllers";
 import { forgotPassword } from "../controllers/user/forgotPassword";
 import { resetPassword } from "../controllers/user/resetPassword";
 import { confirmRequestProduct } from "../controllers/user/confirmRequestProduct";
@@ -19,6 +19,7 @@ router.get("/orders/device/:deviceId", getOrdersByDeviceId);
 router.post("/notifications/custom", sendCustomNotification);
 router.put("/update-profile", updateUser);
 router.delete("/delete-user/:id", deleteAccount);
+router.put("/client/update-address/:id", updateAddress);
 
 router.put("/forgot-password", forgotPassword);
 router.put("/reset-password", resetPassword);
