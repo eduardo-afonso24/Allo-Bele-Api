@@ -5,6 +5,7 @@ import {
   getProducts,
   getProductsAll,
   getProductsAllIsWholesale,
+  getProductsById,
   registerProduct,
   registerProductIsWholesale,
   updateProduct,
@@ -16,6 +17,7 @@ const router = Router();
 
 router.post("/products", registerProduct);
 router.post("/products-is-wholesale", registerProductIsWholesale);
+router.get("/products/:id", getProductsById);
 router.get("/products/:category", getAllProducts);
 router.get("/products", getProducts);
 router.get("/products-all", getProductsAll);

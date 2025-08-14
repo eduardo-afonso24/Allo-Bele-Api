@@ -9,3 +9,4 @@ export * from "./getProductsAll";
 export * from "./getProductsAllIsWholesale";
 export * from "./registerProductIsWholesale";
 export * from "./updateProductIsWholesale";
+export * from "./getProductsById";
