@@ -6,7 +6,7 @@ export const getProductsAll = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const products = await Products.find({})
+    const products = await Products.find({ isWholesale: false })
       .populate('category', '_id name')
       .populate('brand', '_id name')
       .sort({ timestamp: -1 })

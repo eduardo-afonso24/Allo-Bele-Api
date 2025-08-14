@@ -6,3 +6,6 @@ export * from "./getProducts";
 export * from "./updateProductDiscount";
 export * from "./updateProductUnavailable";
 export * from "./getProductsAll";
+export * from "./getProductsAllIsWholesale";
+export * from "./registerProductIsWholesale";
+export * from "./updateProductIsWholesale";

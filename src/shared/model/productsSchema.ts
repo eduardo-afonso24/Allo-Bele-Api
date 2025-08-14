@@ -15,10 +15,12 @@ const ProductsSchema = new mongoose.Schema({
     required: false,
   },
   description: { type: String },
+  units: { type: Number, required: false },
   discount: { type: Number, required: false },
   discountedPrice: { type: Number, required: false },
   promotion: { type: Boolean, default: false },
   unavailable: { type: Boolean, default: false },
+  isWholesale: { type: Boolean, default: false },
   timestamp: { type: Date, default: Date.now },
 });
 

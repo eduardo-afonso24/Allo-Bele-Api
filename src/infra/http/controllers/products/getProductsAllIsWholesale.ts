@@ -1,12 +1,12 @@
 import { Response, Request } from "express";
 import { Products } from "../../../../shared";
 
-export const getProducts = async (
+export const getProductsAllIsWholesale = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const products = await Products.find({ unavailable: false, isWholesale: false })
+    const products = await Products.find({ isWholesale: true })
       .populate('category', '_id name')
       .populate('brand', '_id name')
       .sort({ timestamp: -1 })

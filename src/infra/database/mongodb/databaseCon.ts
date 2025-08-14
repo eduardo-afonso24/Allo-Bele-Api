@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 export const connectDB = async () => {
   try {
-    const dbURI = "mongodb://localhost:27017/AlloBelleDatabase";
-
-    const { connection } = await mongoose.connect(dbURI);
+    const { connection } = await mongoose.connect("mongodb://admin:Angola2024%23@176.126.242.168:27017/", {
+      dbName: "AlloBelleDatabase",
+    });
 
     mongoose.set("debug", true);
     console.log(`✅ Connected to MongoDB at ${connection.host}`);
